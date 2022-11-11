@@ -14,6 +14,7 @@ const Profile = () => {
     const [breedNameList, setBreedNameList] = useState([])
     const [user, setUser] = useState("")
     const [fetchReady, setFetchReady] = useState(false)
+    const [checkedStatus, setCheckedStatus] = useState("Male")
 
     const getUser = async () => {
         try {
@@ -158,7 +159,7 @@ const Profile = () => {
                                     name="gender"
                                     value="male"
                                     onChange={handleChange}
-                                    checked="Male"
+                                    checked={inputData.gender === 'male'}
                                 />
                                 <label htmlFor="maleGender">Male</label>
                                 <input
@@ -167,7 +168,7 @@ const Profile = () => {
                                     name="gender"
                                     value="female"
                                     onChange={handleChange}
-                                // checked={"female"}
+                                    checked={inputData.gender === 'female'}
                                 />
                                 <label htmlFor="femaleGender">Female</label>
                             </div>
@@ -181,7 +182,7 @@ const Profile = () => {
                                 required={true}
                                 onChange={handleChange}
                             />
-                            <input type="submit" className='secondaryButton'></input>
+                            <button type="submit" className='secondaryButton'>Envoyer</button>
                         </section>
                         <section>
                             <label>Profile Picture</label>

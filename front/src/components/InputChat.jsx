@@ -30,7 +30,7 @@ const InputChat = ( { user, matchClicked, getResponseMessages, getMyMessages }) 
                 onChange={(e) => { setMsgToSend(e.target.value) }}
                 value={msgToSend}>
             </textarea>
-            <button className='secondaryButton' onClick={addMessage}>Envoyer</button>
+            <button className='secondaryButton .width' onClick={addMessage}>Envoyer</button>
         </div>
     )
 }

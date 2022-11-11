@@ -76,6 +76,13 @@ button {
     margin: 10px !important;
 }
 
+.secondaryButton:hover {
+    background-color: #fd267a;   
+    border-color: #fd267a;
+    color: white
+
+}
+
 input[type="submit"].secondaryButton {
     margin: 30px !important;
     background-color: #fff;
@@ -200,6 +207,11 @@ nav .navButton:disabled {
     display: none;
 }
 
+select {
+    padding: 10px;
+    border: none;
+}
+
 .profileContainer input[type="radio"]:checked+label {
     border: 1px solid var(--main-color);
     color:var(--main-color);
@@ -235,7 +247,7 @@ nav .navButton:disabled {
 .dashboard .swipeContainer {
     display: flex;
     justify-content: center;
-    width: 30%;
+    width: 25%;
     position: relative;
 }
 
@@ -284,6 +296,14 @@ nav .navButton:disabled {
     height: 200px;
 }
 
+.desc p {
+    margin:0
+}
+
+.descApi p {
+    margin:10px;
+}
+
 .dashboard .direction {
     position: absolute;
     bottom: 0;
@@ -302,7 +322,7 @@ nav .navButton:disabled {
     display: inline-block;
     transform-origin: top center;
     animation: swing 2s ease infinite;
-    animation-iteration-count: 3
+    animation-iteration-count: 1
 }
 
 @keyframes swing {
@@ -335,7 +355,7 @@ nav .navButton:disabled {
 
 .dogsApiContainer {
     padding-left: 200px;
-    width: 300px;
+    width: 600px;
 }
 
 .slide-up, .slide-down {
@@ -356,10 +376,10 @@ nav .navButton:disabled {
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
     animation-duration: 1s;
-    margin-right: 100px;
+    margin-right: 10px;
 }
 
-.tinderCardCSS{
+.zIndex2{
     z-index: 2;
 }
 
@@ -386,6 +406,30 @@ nav .navButton:disabled {
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
     animation-duration: 0.5s; 
+}
+
+.validate {
+    fill: #50C878;
+    width: 70px;
+    position: absolute;
+    top: 350px;
+    left: 485px;
+    background-color: transparent;
+    border: none;
+}
+
+.validate button:hover {
+    width: 90px;
+}
+
+.unvalidate {
+    fill: #FF5733;
+    width: 70px;
+    position: absolute;
+    top: 350px;
+    left: -100px;
+    background-color: transparent;    
+    border: none;
 }
 
 @-webkit-keyframes slideIn {
@@ -427,7 +471,7 @@ nav .navButton:disabled {
 .chatContainer {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     text-align: left;
-    width: 30%;
+    width: 25%;
     min-height: 99.9vh;
 }
 
