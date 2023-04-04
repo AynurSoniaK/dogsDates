@@ -15,7 +15,6 @@ export const Dashboard = () => {
   const [breedName, setBreedName] = useState("")
   const [classAnim, setClassAnim] = useState("")
   const [userMatchesArray, setUserMatchesArray] = useState([])
-  const [dogListReady, setDogListReady] = useState(false)
 
   const getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
 
@@ -44,7 +43,6 @@ export const Dashboard = () => {
       axios.defaults.headers.common['x-api-key'] = dogApiKey
       const response = await axios.get(`https://api.thedogapi.com/v1/breeds`)
       setDogsBreedList(response.data)
-      setDogListReady(true)
     }
     catch (err) { console.log(err) }
   }
@@ -52,9 +50,6 @@ export const Dashboard = () => {
   useEffect(() => {
     getUser().then(() => getDogs()).then(() => getDogsApiInfo())
   }, [])
-
-
-  console.log(dogsList, "dogsList")
 
   const breedFound = useMemo(() => dogsBreedList.find(e => e.name === breedName), [breedName])
 
@@ -85,8 +80,6 @@ export const Dashboard = () => {
 
 
   const swiped = (direction, swipedUserId) => {
-    console.log(swipedUserId, "swipedUserIddd")
-    console.log("hello")
     if (direction === "right") {
       addMatch(swipedUserId)
       setBreedName('')
@@ -102,7 +95,6 @@ export const Dashboard = () => {
       setClassAnim('')
       setDogsList(current =>
         current.filter(obj => {
-          console.log("left")
           return obj.user_id !== swipedUserId;
         }))
     }
@@ -110,7 +102,6 @@ export const Dashboard = () => {
   }
 
   const rightClick = (right, swipedUserId) => {
-    console.log("helloRight")
     addMatch(swipedUserId)
     setBreedName('')
     setClassAnim('')
@@ -122,7 +113,6 @@ export const Dashboard = () => {
   }
 
   const leftClick = (left, swipedUserId) => {
-    console.log("helloLeft")
     addMatch(swipedUserId)
     setBreedName('')
     setClassAnim('')
@@ -150,8 +140,6 @@ export const Dashboard = () => {
       setUserMatchesArray(tab)
     }
   }, [user])
-
-  console.log(userMatchesArray, "usermatcharray")
 
   return (
     <>

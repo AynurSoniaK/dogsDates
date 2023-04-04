@@ -1,20 +1,17 @@
 import axios from 'axios'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { useCookies } from 'react-cookie'
 const dogApiKey = process.env.DOGAPI
 
-
-
 const Profile = () => {
 
-    const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
+    const [cookies] = useCookies(['cookie-user'])
     const user_id = cookies.UserId
     const [breedNameList, setBreedNameList] = useState([])
     const [user, setUser] = useState("")
     const [fetchReady, setFetchReady] = useState(false)
-    const [checkedStatus, setCheckedStatus] = useState("Male")
 
     const getUser = async () => {
         try {
@@ -56,9 +53,6 @@ const Profile = () => {
         }))
     }, [user])
 
-
-
-    // const logged = true
     const logged = cookies.UserId
     const [inputData, setInputData] = useState({
         user_id: cookies.UserId,
@@ -99,10 +93,8 @@ const Profile = () => {
         }
     }
 
-    console.log(inputData, "race")
-
     return (
-        <>
+        <div  className='profilePage'>
             <Navbar logged={logged} />
             {fetchReady &&
                 <div className='profileContainer'>
@@ -120,7 +112,6 @@ const Profile = () => {
                                 value={inputData.name}
                                 required={true}
                                 onChange={handleChange}
-                            // placeholder={user.name ? user.name : ""}
                             />
                             <label>Date of Birth</label>
                             <input
@@ -204,7 +195,7 @@ const Profile = () => {
                     </form>
                 </div>
             }
-        </>
+        </div>
     )
 }
 

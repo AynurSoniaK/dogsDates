@@ -18,7 +18,6 @@ const LoginModal = ({ setShowModal, signUp }) => {
     }
 
     const handleSubmit = async (e) => {
-        console.log(error,"error")
         e.preventDefault()
         try {
             if (signUp && (password !== confirmPassword)) {
@@ -28,7 +27,6 @@ const LoginModal = ({ setShowModal, signUp }) => {
             const success = response.status === 201 || response.status === 204
             setCookie("UserId", response.data.user_id)
             setCookie("Token", response.data.userToken)
-            // setCookie("Email", response.data.email)
             if (success && !signUp) {
                 navigate("/dashboard")
             }

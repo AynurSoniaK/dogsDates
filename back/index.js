@@ -3,15 +3,17 @@ const { MongoClient } = require("mongodb")
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const PORT = 8000
 const cors = require('cors')
 require('dotenv').config()
 const uri = process.env.URI
+const PORT = process.env.API_PORT
 
 
 const app = express()
 
-app.listen(PORT, () => console.log("Server running on port " + PORT))
+if (PORT) {
+    app.listen(PORT)
+}
 app.use(cors())
 app.use(express.json())
 
@@ -32,9 +34,6 @@ app.post("/signin", async (req, res) => {
             const userToken = jwt.sign(isExistingUser, email, { expiresIn: "24h" })
             res.status(201).json({ userToken, user_id: isExistingUser.user_id })
         }
-        // if (!isExistingUser) {
-        //     res.status(400).json("This email doesn't exist")
-        // }
         else {
             res.status(400).send("Identifiants incorrects")
         }
@@ -81,34 +80,12 @@ app.post("/signup", async (req, res) => {
     }
 })
 
-// app.get("/user", async (req, res) => {
-//     const client = new MongoClient(uri, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//     });
-
-//     const idUser = req.query.user_id
-
-//     try {
-//         await client.connect()
-//         const bdd = client.db('Dogs')
-//         const users = bdd.collection('users')
-
-//         const query = { user_id: idUser }
-//         const user = await users.findOne(query)
-//         res.send(user)
-//     } finally {
-//         await client.close()
-//     }
-// })
-
 app.get("/users", async (req, res) => {
     const client = new MongoClient(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
     const idUser = req.query.user_id
-    console.log(idUser,"idUser")
 
     try {
         await client.connect()
@@ -189,8 +166,6 @@ app.put("/update-user", async (req, res) => {
                 gender: inputData.gender,
                 url: inputData.url,
                 about: inputData.about,
-                // matches: inputData.matches,
-                // noMatches: inputData.noMatches
                 matches: [],
                 noMatches: []
             }
@@ -290,5 +265,4 @@ app.post("/addMessage", async (req, res) => {
         await client.close()
     }
 })
-
 

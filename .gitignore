@@ -1,0 +1,8 @@
+# Secret file
+.env
+
+back/node_modules
+back/package-lock.json
+back/package.json
+front/package-lock.json
+front/package.json
