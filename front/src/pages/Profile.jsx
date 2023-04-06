@@ -123,16 +123,6 @@ const Profile = () => {
                                 required={true}
                                 onChange={handleChange}
                             />
-                            {/* <label>Race</label>
-                            <input
-                                id="race"
-                                type="text"
-                                name="race"
-                                placeholder={user.race ? user.race : ""}
-                                value={inputData.race}
-                                required={true}
-                                onChange={handleChange}
-                            /> */}
                             <label for="race-select">Race </label>
                             <select name="race" id="race-select" onChange={handleChange}>
                                 <option value="">--Please choose a race</option>
@@ -173,7 +163,7 @@ const Profile = () => {
                                 required={true}
                                 onChange={handleChange}
                             />
-                            <button type="submit" className='secondaryButton'>Envoyer</button>
+                            <button type="submit" className='secondaryButton'>Enregistrer</button>
                         </section>
                         <section>
                             <label>Profile Picture</label>

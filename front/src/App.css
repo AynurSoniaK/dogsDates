@@ -306,6 +306,11 @@ select {
     height: 200px;
 }
 
+.centered {
+    text-align: left;
+    margin-left: 35%;
+}
+
 .desc p {
     margin:0
 }

@@ -1,12 +1,12 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/front/node_modules
-/front/package-lock.json
-/front/package.json
-/back/node_modules
-/back/package-lock.json
-/back/package.json
+front/node_modules
+front/package-lock.json
+front/package.json
+back/node_modules
+back/package-lock.json
+back/package.json
 /.pnp
 .pnp.js
 
