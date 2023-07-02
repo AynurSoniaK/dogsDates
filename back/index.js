@@ -14,7 +14,12 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
   
-app.use(cors())
+app.use(cors({
+    origin: 'https://dogsdates.onrender.com',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
+  
 app.use(express.json())
 
 app.post("/signin", async (req, res) => {
