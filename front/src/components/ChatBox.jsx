@@ -12,7 +12,7 @@ const ChatBox = ({ user, matchClicked }) => {
 
   const getMyMessages = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/messages",
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/messages`,
         {
           params: {
             fromUserId: user.user_id, toUserId: matchClicked.user_id
@@ -28,7 +28,7 @@ const ChatBox = ({ user, matchClicked }) => {
 
   const getResponseMessages = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/messages",
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/messages`,
         {
           params: {
             fromUserId: matchClicked.user_id , toUserId: user.user_id

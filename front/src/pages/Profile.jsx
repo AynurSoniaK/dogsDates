@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { useCookies } from 'react-cookie'
 const dogApiKey = process.env.DOGAPI
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const Profile = () => {
 
@@ -15,7 +16,7 @@ const Profile = () => {
 
     const getUser = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/user', { params: { user_id } })
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/user`, { params: { user_id } })
             setUser(response.data)
         }
         catch (err) {
@@ -82,7 +83,7 @@ const Profile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.put('http://localhost:8000/update-user', { inputData })
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/update-user`, { inputData })
             const success = response.status === 200
             if (success) {
                 navigate('/dashboard')
