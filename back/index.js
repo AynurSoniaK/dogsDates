@@ -6,14 +6,14 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 require('dotenv').config()
 const uri = process.env.URI
-const PORT = process.env.API_PORT
-
+const PORT = process.env.PORT || 8000;
 
 const app = express()
 
-if (PORT) {
-    app.listen(PORT)
-}
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+  
 app.use(cors())
 app.use(express.json())
 
