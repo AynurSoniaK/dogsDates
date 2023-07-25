@@ -167,7 +167,7 @@ app.put("/update-user", async (req, res) => {
                 url: inputData.url,
                 about: inputData.about,
                 matches: [],
-                noMatches: []
+                noMatches: inputData.noMatches
             }
         }
         const updateUser = await users.updateOne(query, data)
