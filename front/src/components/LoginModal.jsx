@@ -23,7 +23,7 @@ const LoginModal = ({ setShowModal, signUp }) => {
             if (signUp && (password !== confirmPassword)) {
                 setError("Passwords doesn't match !")
             }
-            const response = await axios.post(`http://localhost:8000/${signUp ? "signup" : "signin"}`, { email, password })
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/${signUp ? "signup" : "signin"}`, { email, password });
             const success = response.status === 201 || response.status === 204
             setCookie("UserId", response.data.user_id)
             setCookie("Token", response.data.userToken)
