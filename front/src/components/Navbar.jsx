@@ -7,7 +7,6 @@ export const Navbar = ( { logged, setShowModal, showModal, setSignUp } ) => {
         setSignUp(false)
     }
 
-
     return (
         <nav>
             <div className='logoContainer'>

@@ -13,6 +13,21 @@ const Profile = () => {
     const [breedNameList, setBreedNameList] = useState([])
     const [user, setUser] = useState("")
     const [fetchReady, setFetchReady] = useState(false)
+    const logged = cookies.UserId
+    const [inputData, setInputData] = useState({
+        user_id: cookies.UserId,
+        name: "",
+        dob: "",
+        race: "",
+        gender: "male",
+        email: "",
+        url: "",
+        about: "",
+        matches: [],
+        noMatches: []
+    })
+
+    let navigate = useNavigate()
 
     const getUser = async () => {
         try {
@@ -20,7 +35,7 @@ const Profile = () => {
             setUser(response.data)
         }
         catch (err) {
-            console.log(err)
+            navigate('/error'); 
         }
     }
 
@@ -31,7 +46,9 @@ const Profile = () => {
             const breedsList = response.data.map(breed => { return breed.name })
             setBreedNameList(breedsList)
         }
-        catch (err) { console.log(err) }
+        catch (err) { 
+            navigate('/error'); 
+        }
     }
 
     useEffect(() => {
@@ -49,26 +66,10 @@ const Profile = () => {
             email: user.email,
             url: user.url,
             about: user.about,
-            matches: [],
-            noMatches: []
+            matches: user.matches,
+            noMatches: user.noMatches
         }))
     }, [user])
-
-    const logged = cookies.UserId
-    const [inputData, setInputData] = useState({
-        user_id: cookies.UserId,
-        name: "",
-        dob: "",
-        race: "",
-        gender: "male",
-        email: "",
-        url: "",
-        about: "",
-        matches: [],
-        noMatches: []
-    })
-
-    let navigate = useNavigate()
 
     const handleChange = (e) => {
         const value = e.target.value
@@ -90,13 +91,13 @@ const Profile = () => {
             }
         }
         catch (err) {
-            console.log(err)
+            navigate('/error'); 
         }
     }
 
     return (
-        <div  className='profilePage'>
-            <Navbar logged={logged} />
+        <div className='profilePage'>
+            {/* <Navbar logged={logged} /> */}
             {fetchReady &&
                 <div className='profileContainer'>
                     {user.name ?
@@ -124,7 +125,7 @@ const Profile = () => {
                                 required={true}
                                 onChange={handleChange}
                             />
-                            <label for="race-select">Race </label>
+                            <label htmlFor="race-select">Race </label>
                             <select name="race" id="race-select" onChange={handleChange}>
                                 <option value="">--Please choose a race</option>
                                 {breedNameList.map((option, index) => {
@@ -164,7 +165,9 @@ const Profile = () => {
                                 required={true}
                                 onChange={handleChange}
                             />
-                            <button type="submit" className='secondaryButton'>Enregistrer</button>
+                            <div className="buttonContainer">
+                                <button type="submit" className='secondaryButton'>Enregistrer</button>
+                            </div>
                         </section>
                         <section>
                             <label>Profile Picture</label>

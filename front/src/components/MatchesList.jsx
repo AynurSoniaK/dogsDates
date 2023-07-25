@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useCookies } from "react-cookie"
+import { useNavigate } from 'react-router-dom'
 
 const MatchesList = ({ matches, setMatchClicked }) => {
 
@@ -8,6 +9,7 @@ const MatchesList = ({ matches, setMatchClicked }) => {
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
   const matchedUserIds = matches.map(({ user_id }) => user_id)
   const userId = cookies.UserId
+  let navigate = useNavigate()
 
   const getMatches = async () => {
     try {
@@ -17,9 +19,7 @@ const MatchesList = ({ matches, setMatchClicked }) => {
       setDogMatched(response.data)
     }
     catch (error) {
-      if (error.response) {
-        console.log('Error', error.message);
-      }
+      navigate('/error'); 
     }
   }
 

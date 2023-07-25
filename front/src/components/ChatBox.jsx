@@ -3,12 +3,14 @@ import ChatSpace from './ChatSpace'
 import InputChat from './InputChat'
 import axios from 'axios'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const ChatBox = ({ user, matchClicked }) => {
 
   const [userMessages, setUserMessages] = useState([])
   const [responseMessages, setResponseMessages] = useState([])
 
+  let navigate = useNavigate()
 
   const getMyMessages = async () => {
     try {
@@ -21,8 +23,8 @@ const ChatBox = ({ user, matchClicked }) => {
       )
       setUserMessages(response.data)
     }
-    catch(err) {
-      console.log(err)
+    catch (err) {
+      navigate('/error');
     }
   }
 
@@ -31,14 +33,14 @@ const ChatBox = ({ user, matchClicked }) => {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/messages`,
         {
           params: {
-            fromUserId: matchClicked.user_id , toUserId: user.user_id
+            fromUserId: matchClicked.user_id, toUserId: user.user_id
           }
         }
       )
       setResponseMessages(response.data)
     }
-    catch(err) {
-      console.log(err)
+    catch (err) {
+      navigate('/error');
     }
   }
 
@@ -47,26 +49,26 @@ const ChatBox = ({ user, matchClicked }) => {
     getResponseMessages()
   }, [])
 
-  const messagesFullData = [];  
-  userMessages?.map( message => {
-      const msg = {}
-      msg['name'] = user?.name
-      msg['url'] = user?.url
-      msg['message'] = message.message
-      msg['date'] = message.timestamps
-      messagesFullData.push(msg)
+  const messagesFullData = [];
+  userMessages?.map(message => {
+    const msg = {}
+    msg['name'] = user?.name
+    msg['url'] = user?.url
+    msg['message'] = message.message
+    msg['date'] = message.timestamps
+    messagesFullData.push(msg)
   })
 
-  responseMessages?.map( message => {
+  responseMessages?.map(message => {
     const msg = {}
     msg['name'] = matchClicked?.name
     msg['url'] = matchClicked?.url
     msg['message'] = message.message
     msg['date'] = message.timestamps
     messagesFullData.push(msg)
-})
+  })
 
-  const orderedMessages = messagesFullData?.sort((a,b) => a.timestamps - b.timestamps)
+  const orderedMessages = messagesFullData?.sort((a, b) => a.timestamps - b.timestamps)
 
   return (
     <>
