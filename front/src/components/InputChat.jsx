@@ -1,16 +1,18 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-const InputChat = ( { user, matchClicked, getResponseMessages, getMyMessages }) => {
+const InputChat = ({ user, matchClicked, getResponseMessages, getMyMessages }) => {
 
     const [msgToSend, setMsgToSend] = useState("")
+    let navigate = useNavigate()
 
     const addMessage = async () => {
         const message = {
-           from : user.user_id,
-           to: matchClicked.user_id,
-           timestamps : new Date().toISOString(),
-           message : msgToSend
+            from: user.user_id,
+            to: matchClicked.user_id,
+            timestamps: new Date().toISOString(),
+            message: msgToSend
         }
 
         try {
@@ -19,8 +21,8 @@ const InputChat = ( { user, matchClicked, getResponseMessages, getMyMessages }) 
             getResponseMessages()
             setMsgToSend('')
         }
-        catch(err) {
-            console.log(err)
+        catch (err) {
+            navigate('/error'); 
         }
     }
 

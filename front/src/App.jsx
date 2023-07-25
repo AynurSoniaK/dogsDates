@@ -3,6 +3,7 @@ import './App.css'
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Profile from "./pages/Profile"
+import ErrorPage from './pages/ErrorPage';
 import {
   BrowserRouter,
   Routes,
@@ -25,6 +26,7 @@ const App = () => {
         {token &&<Route path="/profile" element={token ? <Profile /> : <Home />} />} */}
         <Route path="/dashboard" element={token ? <Dashboard /> : <Home />} />
         <Route path="/profile" element={token ? <Profile /> : <Home />} />
+        <Route path="/error" element={token ? <ErrorPage /> : <Home />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>

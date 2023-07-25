@@ -36,9 +36,11 @@ const LoginModal = ({ setShowModal, signUp }) => {
             window.location.reload()
         }
         catch (error) {
-            console.log(error)
             if (error.response.status === 400) {
                 setError("Identifiants incorrects !")
+            }
+            else {
+                navigate('/error'); 
             }
         }
     }
