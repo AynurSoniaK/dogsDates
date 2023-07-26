@@ -5,19 +5,6 @@
         "src": "index.js",
         "use": "@vercel/node"
       }
-    ],
-    "routes": [
-      { "src": "/api/signin", "dest": "index.js" },
-      { "src": "/api/signup", "dest": "index.js" },
-      { "src": "/api/users", "dest": "index.js" },
-      { "src": "/api/dogsMatches", "dest": "index.js" },
-      { "src": "/api/user", "dest": "index.js" },
-      { "src": "/api/update-user", "dest": "index.js" },
-      { "src": "/api/addMatch", "dest": "index.js" },
-      { "src": "/api/addNoMatch", "dest": "index.js" },
-      { "src": "/api/messages", "dest": "index.js" },
-      { "src": "/api/addMessage", "dest": "index.js" },
-      { "src": "/(.*)", "dest": "index.js" }
     ]
   }
   
