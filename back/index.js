@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb")
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-const cors = require('cors')
+//const cors = require('cors')
 require('dotenv').config()
 const uri = process.env.URI
 const PORT = process.env.API_PORT
@@ -16,14 +16,18 @@ if (PORT) {
 }
 
 // Configuration de CORS
-app.use(cors({
-    origin: 'http://localhost:3000', 
-    credentials: true, 
-    methods: 'GET, POST, PUT, DELETE, OPTIONS', 
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-}));
+// app.use(cors({
+//     origin: 'http://localhost:3000', 
+//     credentials: true, 
+//     methods: 'GET, POST, PUT, DELETE, OPTIONS', 
+//     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+// }));
 
 app.use(express.json())
+
+app.get('/', (req, res) => {
+    res.send('Hey this is my API running 🥳')
+  })
 
 app.post("/signin", async (req, res) => {
     const client = new MongoClient(uri, {
@@ -274,3 +278,5 @@ app.post("/addMessage", async (req, res) => {
     }
 })
 
+// Export the Express API
+module.exports = app;
