@@ -274,3 +274,5 @@ app.post("/addMessage", async (req, res) => {
     }
 })
 
+// Export the Express API
+module.exports = app;
