@@ -26,7 +26,7 @@ export const Dashboard = () => {
 
   const getUser = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/user', { params: { user_id } })
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user`, { params: { user_id } })
       setUser(response.data)
     }
     catch (err) {
@@ -36,7 +36,7 @@ export const Dashboard = () => {
 
   const getDogs = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/users', { params: { user_id } })
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/users`, { params: { user_id } })
       setDogsList(response.data)
     }
     catch (err) {
@@ -63,7 +63,7 @@ export const Dashboard = () => {
 
   const addMatch = async (swipedUserId) => {
     try {
-      await axios.put('http://localhost:8000/addMatch', {
+      await axios.put(`${process.env.REACT_APP_API_URL}/addMatch`, {
         user_id,
         swipedUserId
       })
@@ -76,7 +76,7 @@ export const Dashboard = () => {
 
   const addNoMatch = async (swipedUserId) => {
     try {
-      await axios.put('http://localhost:8000/addNoMatch', {
+      await axios.put(`${process.env.REACT_APP_API_URL}/addNoMatch`, {
         user_id,
         swipedUserId
       })
