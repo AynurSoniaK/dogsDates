@@ -6,8 +6,7 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 require('dotenv').config()
 const uri = process.env.URI
-const PORT = process.env.API_PORT
-
+const PORT = process.env.PORT || 8000;
 
 const app = express()
 
@@ -21,6 +20,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Credentials', true)
     next()
 })
+
 app.use(express.json())
 
 app.post("/signin", async (req, res) => {

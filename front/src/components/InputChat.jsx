@@ -16,7 +16,7 @@ const InputChat = ({ user, matchClicked, getResponseMessages, getMyMessages }) =
         }
 
         try {
-            const inputData = await axios.post("http://localhost:8000/addMessage", { message })
+            const inputData = await axios.post(`${process.env.REACT_APP_API_URL}/messages`, { message })
             getMyMessages()
             getResponseMessages()
             setMsgToSend('')

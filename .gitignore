@@ -4,9 +4,11 @@
 front/node_modules
 front/package-lock.json
 front/package.json
+front/.env
 back/node_modules
 back/package-lock.json
 back/package.json
+back/.env
 /.pnp
 .pnp.js
 
