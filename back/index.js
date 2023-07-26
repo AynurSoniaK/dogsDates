@@ -14,7 +14,15 @@ const app = express()
 if (PORT) {
     app.listen(PORT)
 }
-app.use(cors())
+
+// Configuration de CORS
+app.use(cors({
+    origin: 'http://localhost:3000', 
+    credentials: true, 
+    methods: 'GET, POST, PUT, DELETE, OPTIONS', 
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+}));
+
 app.use(express.json())
 
 app.post("/signin", async (req, res) => {
@@ -110,9 +118,9 @@ app.get("/dogsMatches", async (req, res) => {
         const data = await users.aggregate(
             [
                 {
-                    $match : {
-                        'user_id' : {
-                            $in : dogsId
+                    $match: {
+                        'user_id': {
+                            $in: dogsId
                         }
                     }
                 }
@@ -167,11 +175,11 @@ app.put("/update-user", async (req, res) => {
                 url: inputData.url,
                 about: inputData.about,
                 matches: [],
-                noMatches: []
+                noMatches: inputData.noMatches
             }
         }
         const updateUser = await users.updateOne(query, data)
-        const updateCity = await users.updateMany({}, {"$set": {"noMatches": []}})
+        const updateCity = await users.updateMany({}, { "$set": { "noMatches": [] } })
         res.send(updateUser)
     }
     finally {
@@ -234,12 +242,12 @@ app.put("/addNoMatch", async (req, res) => {
 
 app.get("/messages", async (req, res) => {
     const client = new MongoClient(uri);
-    const { fromUserId , toUserId } = req.query 
+    const { fromUserId, toUserId } = req.query
     const query = {
-        from : fromUserId,
-        to : toUserId
+        from: fromUserId,
+        to: toUserId
     }
-  
+
     try {
         await client.connect()
         const bdd = client.db('Dogs')
@@ -254,7 +262,7 @@ app.get("/messages", async (req, res) => {
 app.post("/addMessage", async (req, res) => {
     const client = new MongoClient(uri);
     const message = req.body.message
-  
+
     try {
         await client.connect()
         const bdd = client.db('Dogs')

@@ -4,8 +4,6 @@ import LoginModal from "../components/LoginModal"
 import { useCookies } from "react-cookie"
 import { useNavigate } from "react-router-dom";
 
-
-
 const Home = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
 
@@ -27,6 +25,10 @@ const Home = () => {
         setSignUp(true)
     }
 
+    const handleClickEnter = () => {
+        navigate('/dashboard');
+      };
+
     return (
         <div className={showModal ? "homeContainerOpacity" : "homeContainer"}>
             <Navbar 
@@ -37,11 +39,15 @@ const Home = () => {
                 />
             <div className='home'>
                 <h1>{!showModal ? "DogsDates" : ""}</h1>
+                {logged ?
+                <button className='primaryButton' onClick={handleClickEnter}>
+                    entrer
+                </button> :
                 <button className='primaryButton' onClick={handleClick}>
-                    {logged ? "Se connecter" : "s'inscrire"}
-                </button>
+                    {logged ? "se connecter" : "s'inscrire"}
+                </button>}
             </div>
-            {showModal && <LoginModal showModal={showModal} setShowModal={setShowModal} signUp={signUp} />}
+            {showModal && !logged && <LoginModal showModal={showModal} setShowModal={setShowModal} signUp={signUp} />}
         </div>
     )
 }
