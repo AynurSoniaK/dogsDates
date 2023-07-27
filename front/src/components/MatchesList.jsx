@@ -13,7 +13,7 @@ const MatchesList = ({ matches, setMatchClicked }) => {
 
   const getMatches = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/dogsMatches", {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dogsMatches`, {
         params: { dogsIds: JSON.stringify(matchedUserIds) }
       })
       setDogMatched(response.data)
