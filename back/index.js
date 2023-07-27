@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb")
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
-//const cors = require('cors')
+const cors = require('cors')
 require('dotenv').config()
 const uri = process.env.URI
 const PORT = process.env.API_PORT
@@ -15,13 +15,8 @@ if (PORT) {
     app.listen(PORT)
 }
 
-// Configuration de CORS
-// app.use(cors({
-//     origin: 'http://localhost:3000', 
-//     credentials: true, 
-//     methods: 'GET, POST, PUT, DELETE, OPTIONS', 
-//     allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-// }));
+console.log(PORT)
+app.use(cors());
 
 app.use(express.json())
 
@@ -41,13 +36,18 @@ app.post("/signin", async (req, res) => {
         const bdd = client.db('Dogs')
         const users = bdd.collection('users')
         const isExistingUser = await users.findOne({ email })
-        const match = await bcrypt.compare(password, isExistingUser.password)
-        if (isExistingUser && match) {
-            const userToken = jwt.sign(isExistingUser, email, { expiresIn: "24h" })
-            res.status(201).json({ userToken, user_id: isExistingUser.user_id })
-        }
-        else {
-            res.status(400).send("Identifiants incorrects")
+        console.log(email,password)
+        if (isExistingUser) {
+            console.log("isExisting")
+            const match = await bcrypt.compare(password, isExistingUser.password)
+            if (match) {
+                const userToken = jwt.sign(isExistingUser, email, { expiresIn: "24h" })
+                res.status(201).json({ userToken, user_id: isExistingUser.user_id })
+            } else {
+                res.status(400).send("Identifiants incorrects")
+            }
+        } else {
+            res.status(400).send("User not found")
         }
     }
     catch (err) {
