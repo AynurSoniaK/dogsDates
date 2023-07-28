@@ -278,6 +278,7 @@ select {
 /* ---> dashboard */
 .dashboard {
     display: flex;
+    background-image: url(../public/bgPows.png);
 }
 
 .hidden {
@@ -590,6 +591,7 @@ select {
     text-align: left;
     width: 25%;
     min-height: 99.9vh;
+    background-color:#fff
 }
 
 .chatContainer .choice {
@@ -606,10 +608,20 @@ select {
 }
 
 .chatHeaderContainer {
-    background: linear-gradient(45deg, #fd267a, #ff6036);
+    background: linear-gradient(45deg, rgba(253, 38, 122, 0.7), rgba(255, 96, 54, 0.7));
+    /* background-color: var(--grey-color); */
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 70px;
+}
+
+.profile {
+    margin-left: auto;
+}
+
+.chatHeaderContainer .profile h3{
+    margin-right: 15px;
 }
 
 .chatHeaderContainer .profile,
@@ -617,6 +629,7 @@ select {
     display: flex;
     align-items: center;
     padding: 15px;
+    padding-left: 0;
 }
 
 .logoutIcon {
@@ -644,8 +657,8 @@ select {
 .imgContainer {
     margin: 15px;
     border-radius: 50px;
-    width: 80px;
-    height: 80px;
+    width: 55px;
+    height: 55px;
     overflow: hidden;
 }
 
