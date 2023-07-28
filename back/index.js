@@ -15,7 +15,6 @@ if (PORT) {
     app.listen(PORT)
 }
 
-console.log(PORT)
 app.use(cors());
 
 app.use(express.json())
@@ -36,9 +35,7 @@ app.post("/signin", async (req, res) => {
         const bdd = client.db('Dogs')
         const users = bdd.collection('users')
         const isExistingUser = await users.findOne({ email })
-        console.log(email,password)
         if (isExistingUser) {
-            console.log("isExisting")
             const match = await bcrypt.compare(password, isExistingUser.password)
             if (match) {
                 const userToken = jwt.sign(isExistingUser, email, { expiresIn: "24h" })

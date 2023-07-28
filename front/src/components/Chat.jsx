@@ -8,7 +8,7 @@ const Chat = ({ user }) => {
 
     return (
         <div className="chatContainer">
-            <ChatHeader user={user} />
+            {/* <ChatHeader user={user} /> */}
             <div>
                 <button className='choice' onClick={() => setMatchClicked(null)}>Matches</button>
                 <button className='choice' disabled={!matchClicked}>Chat</button>
