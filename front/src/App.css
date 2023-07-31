@@ -3,6 +3,7 @@
 :root {
     --main-color: #fd267a;
     --grey-color: #C0C0C0;
+    --dark-grey-color: #605f5f;
     --main-font-size: 15px;
     --main-border-radius: 20px;
 }
@@ -82,7 +83,7 @@ button {
     opacity: 0.8;
     font-size: 13px;
     padding: 15px 25px;
-    margin: 30px;
+    margin: 30px 0px 10px 0px;
     width: 150px;
 }
 
@@ -96,6 +97,16 @@ button {
     width: 150%;
     fill: white;
     margin: 20px;
+}
+
+.logoHeader {
+    width: 2.5%;
+    fill: white;
+    margin: 20px;
+}
+
+.chatHeaderContainer h3 {
+    color: white;
 }
 
 .logoError {
@@ -200,7 +211,7 @@ nav .navButton:disabled {
 }
 
 .profileContainer label {
-    margin: 15px 0px;
+    margin: 15px 0px 5px 0px;
     text-align: left;
 }
 
@@ -215,9 +226,10 @@ nav .navButton:disabled {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--grey-color);
-    padding: 14px 28px;
+    padding: 11px 28px;
     font-size: var(--main-font-size);
     border-radius: 10px;
+    min-width: 222px;
 }
 
 .profileContainer select {
@@ -275,6 +287,21 @@ select {
     object-fit: cover;
 }
 
+.emptyDiv {
+    background-color:  #f5f1f1;
+    margin: 10px;
+    width: 258px;
+    height: 386px;
+    border-radius: var(--main-border-radius);
+    display: flex;
+    align-items: center;
+}
+
+.emptyDiv h4 {
+    width: 300px;
+    color: #FF5733;
+}
+
 /* ---> dashboard */
 .dashboard {
     display: flex;
@@ -296,6 +323,7 @@ select {
 
 .dashboard .swipe {
     position: absolute;
+    top: 6%;
 }
 
 .dashboard h4 {
@@ -325,6 +353,8 @@ select {
 
 .card .nameContainer {
     background-color: #fff;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .card .name {
@@ -357,22 +387,28 @@ select {
 .card .desc {
     font-size: 20px;
     position: absolute;
-    top: 559px;
-    left: 0px;
+    top: 33px;
+    left: 390px;
     background-color: #F4F4F4;
-    width: 377px;
-    height: 140px;
+    width: 374px;
+    height: 511px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 20px;
 }
 
-.card .desc svg {
-    position: absolute;
-    bottom: 863px;
-    right: 118px;
+.card .desc .iconDesc {
     width: 44px;
+    fill:var(--dark-grey-color);
+    background-color: transparent;
+    border: none;
+}
+
+.rowDesc {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
 }
 
 .desc p {
@@ -426,15 +462,7 @@ select {
     }
 }
 
-.dogsApi {
-    margin-top: 70px;
-    margin-left: 50px;
-    width: 300px;
-}
-
-.dogsApiContainer {
-    padding-left: 222px;
-    width: 600px;
+.dogsApiContainer .dogsApi{
     font-size: 20px
 }
 
@@ -447,6 +475,25 @@ select {
     -webkit-background-clip: text;
     background-clip: text;
 }
+
+.badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
+    background-color: #f0f0f0;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
 
 .slide-up,
 .slide-down {
@@ -479,8 +526,8 @@ select {
 
 .endList {
     position: absolute;
-    top: 180px;
-    left: 65px;
+    top: 99px;
+    left: 541px;
     font-size: 42px;
     color: var(--grey-color)
 }
@@ -589,7 +636,7 @@ select {
 .chatContainer {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     text-align: left;
-    width: 25%;
+    width: 22%;
     min-height: 99.9vh;
     background-color:#fff
 }
