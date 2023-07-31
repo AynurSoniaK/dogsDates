@@ -22,7 +22,7 @@ const Profile = () => {
         email: "",
         url: "",
         city: "",
-        weight:"",
+        weight: "",
         about: "",
         matches: [],
         noMatches: []
@@ -96,6 +96,10 @@ const Profile = () => {
         catch (err) {
             navigate('/error');
         }
+    }
+
+    const cancelRedirect = () => {
+        navigate('/dashboard');
     }
 
     return (
@@ -179,6 +183,7 @@ const Profile = () => {
                                 onChange={handleChange}
                             />
                             <div className="buttonContainer">
+                                <button className='secondaryButton' onClick={() => cancelRedirect()}>Annuler</button>
                                 <button type="submit" className='secondaryButton'>Enregistrer</button>
                             </div>
                         </section>
