@@ -177,8 +177,10 @@ app.put("/update-user", async (req, res) => {
                 about: inputData.about,
                 city: inputData.city,
                 weight: inputData.weight,
-                matches: inputData.matches,
-                noMatches: inputData.noMatches
+                // matches: inputData.matches,
+                matches: [],
+                noMatches: []
+                // noMatches: inputData.noMatches
             }
         }
         const updateUser = await users.updateOne(query, data)

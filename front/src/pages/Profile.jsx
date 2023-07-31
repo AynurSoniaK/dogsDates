@@ -3,7 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { useCookies } from 'react-cookie'
+import ClipLoader from "react-spinners/ClipLoader"
+
 const dogApiKey = process.env.DOGAPI
+
 
 const Profile = () => {
 
@@ -56,6 +59,8 @@ const Profile = () => {
         getUser().then(() => getBreeds().then(() => setFetchReady(true)))
     }, [])
 
+    console.log(user,"user")
+
     useEffect(() => {
         setInputData((prevState) => ({
             ...prevState,
@@ -69,7 +74,7 @@ const Profile = () => {
             weight: user.weight,
             about: user.about,
             city: user.city,
-            matches: user.matches,
+            matches: user.matches ?? [],
             noMatches: user.noMatches
         }))
     }, [user])
@@ -104,7 +109,14 @@ const Profile = () => {
 
     return (
         <div className='profilePage'>
-            {/* <Navbar logged={logged} /> */}
+            {!fetchReady &&
+            <ClipLoader
+                color="black"
+                loading={user}
+                size={100}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+            />}
             {fetchReady &&
                 <div className='profileContainer'>
                     {user.name ?

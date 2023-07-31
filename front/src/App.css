@@ -413,6 +413,7 @@ select {
     position: absolute;
     bottom: 89px;
     left: 297px;
+    cursor: pointer
 }
 
 .rowDesc {
@@ -678,6 +679,10 @@ select {
     align-items: center;
     justify-content: space-between;
     height: 70px;
+}
+
+.ml-0 {
+    margin-left: 0px;
 }
 
 .profile {
