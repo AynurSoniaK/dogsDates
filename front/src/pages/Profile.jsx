@@ -21,6 +21,8 @@ const Profile = () => {
         gender: "male",
         email: "",
         url: "",
+        city: "",
+        weight:"",
         about: "",
         matches: [],
         noMatches: []
@@ -34,7 +36,7 @@ const Profile = () => {
             setUser(response.data)
         }
         catch (err) {
-            navigate('/error'); 
+            navigate('/error');
         }
     }
 
@@ -45,8 +47,8 @@ const Profile = () => {
             const breedsList = response.data.map(breed => { return breed.name })
             setBreedNameList(breedsList)
         }
-        catch (err) { 
-            navigate('/error'); 
+        catch (err) {
+            navigate('/error');
         }
     }
 
@@ -64,7 +66,9 @@ const Profile = () => {
             gender: user.gender,
             email: user.email,
             url: user.url,
+            weight: user.weight,
             about: user.about,
+            city: user.city,
             matches: user.matches,
             noMatches: user.noMatches
         }))
@@ -90,7 +94,7 @@ const Profile = () => {
             }
         }
         catch (err) {
-            navigate('/error'); 
+            navigate('/error');
         }
     }
 
@@ -124,6 +128,16 @@ const Profile = () => {
                                 required={true}
                                 onChange={handleChange}
                             />
+                            <label>Weight</label>
+                            <input
+                                id="weight"
+                                type="text"
+                                name="weight"
+                                placeholder={"Enter weight in kg"}
+                                value={inputData.weight}
+                                required={true}
+                                onChange={handleChange}
+                            />
                             <label htmlFor="race-select">Race </label>
                             <select name="race" id="race-select" onChange={handleChange}>
                                 <option value="">--Please choose a race</option>
@@ -154,13 +168,13 @@ const Profile = () => {
                                 />
                                 <label htmlFor="femaleGender">Female</label>
                             </div>
-                            <label>About me</label>
+                            <label>City</label>
                             <input
-                                id="about"
-                                type="textarea"
-                                name="about"
-                                placeholder={user.about ? user.about : "about"}
-                                value={inputData.about}
+                                id="city"
+                                type="text"
+                                name="city"
+                                placeholder={"Enter name of your city"}
+                                value={inputData.city}
                                 required={true}
                                 onChange={handleChange}
                             />
@@ -169,6 +183,16 @@ const Profile = () => {
                             </div>
                         </section>
                         <section>
+                            <label>About me</label>
+                            <input
+                                id="about"
+                                type="textarea"
+                                name="about"
+                                placeholder="What does your dog like ?"
+                                value={inputData.about}
+                                required={true}
+                                onChange={handleChange}
+                            />
                             <label>Profile Picture</label>
                             <input
                                 id="url"
@@ -179,9 +203,12 @@ const Profile = () => {
                                 required={true}
                                 onChange={handleChange}
                             />
-                            {inputData.url &&
+                            {inputData.url ?
                                 <div className='profilePictureContainer'>
                                     <img src={inputData.url} alt="profile" />
+                                </div> :
+                                <div className='emptyDiv'>
+                                    <h4>Add a photo</h4>
                                 </div>
                             }
                         </section>
