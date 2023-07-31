@@ -177,7 +177,7 @@ app.put("/update-user", async (req, res) => {
                 about: inputData.about,
                 city: inputData.city,
                 weight: inputData.weight,
-                matches: [],
+                matches: inputData.matches,
                 noMatches: inputData.noMatches
             }
         }

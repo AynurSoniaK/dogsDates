@@ -68,6 +68,7 @@ export const Dashboard = () => {
   const breedFound = useMemo(() => dogsBreedList.find(e => e.name === breedName), [breedName])
 
   const addMatch = async (swipedUserId) => {
+    setDogsBreedView(false)
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/addMatch`, {
         user_id,
@@ -81,6 +82,7 @@ export const Dashboard = () => {
 
 
   const addNoMatch = async (swipedUserId) => {
+    setDogsBreedView(false)
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/addNoMatch`, {
         user_id,
@@ -164,13 +166,13 @@ export const Dashboard = () => {
           <ChatHeader user={user} />
           <div className='dashboard'>
             <Chat user={user} />
-            {dogsListReady && dogsList.length == 0 &&
+            {dogsList.length == 0 &&
               <div className='emptyDogListText'>
                 <h2 className='endList'>No one here</h2>
               </div>}
             <div className="swipeContainer">
               {
-                dogsList.length > 0 &&
+                dogsBreedList.length > 0 && dogsList.length > 0 &&
                 dogsList.map((character, index) =>
                   <div className="zIndex2" key={character.name}>
                     {userMatchesArray.length === dogsList.length &&
@@ -186,10 +188,10 @@ export const Dashboard = () => {
                           preventSwipe={['right', 'left']}
                         >
                           <div
-                            style={{ backgroundImage: 'url(' + character.url + ')' }}
-                            className='card'>
+                            style={{ backgroundImage: !dogsBreedView & character.url ? 'url(' + character.url + ')' : dogsBreedView && breedFound.image.url ? 'url(' + breedFound.image.url + ')' : 'url(' + character.url + ')' }}
+                            className= 'card'>
                             <div className='nameContainer'>
-                              <h3 className={character.gender === "female" ? 'name female' : 'name male'}>{character.name}</h3>
+                              <h3 className={dogsBreedView ? "name gradientColor" : character.gender === "female" ? 'name female' : 'name male'}>{dogsBreedView ? breedFound.name : character.name}</h3>
                             </div>
                             <div className='buttonValidateContainer'>
                               <button
@@ -202,6 +204,7 @@ export const Dashboard = () => {
                             <div className='desc'>
                               {!dogsBreedView ?
                                 <div>
+                                  <h3>{character.name}'s info</h3>
                                   <div className='rowDesc'>
                                     <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><path d="M176 288a112 112 0 1 0 0-224 112 112 0 1 0 0 224zM352 176c0 86.3-62.1 158.1-144 173.1V384h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H208v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V448H112c-17.7 0-32-14.3-32-32s14.3-32 32-32h32V349.1C62.1 334.1 0 262.3 0 176C0 78.8 78.8 0 176 0s176 78.8 176 176zM271.9 360.6c19.3-10.1 36.9-23.1 52.1-38.4c20 18.5 46.7 29.8 76.1 29.8c61.9 0 112-50.1 112-112s-50.1-112-112-112c-7.2 0-14.3 .7-21.1 2c-4.9-21.5-13-41.7-24-60.2C369.3 66 384.4 64 400 64c37 0 71.4 11.4 99.8 31l20.6-20.6L487 41c-6.9-6.9-8.9-17.2-5.2-26.2S494.3 0 504 0H616c13.3 0 24 10.7 24 24V136c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-33.4-33.4L545 140.2c19.5 28.4 31 62.7 31 99.8c0 97.2-78.8 176-176 176c-50.5 0-96-21.3-128.1-55.4z" /></svg>
                                     <p>{character.gender}</p>
@@ -232,44 +235,43 @@ export const Dashboard = () => {
                                 <div className={`dogsApi ${classAnim}`}>
                                   {dogsBreedView && breedFound &&
                                     <div>
-                                      <h3>The {breedFound.name}</h3>
-                                      <div>
-                                        <div className='rowDesc'>
-                                          <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><path d="M96 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32V224v64V448c0 17.7-14.3 32-32 32H128c-17.7 0-32-14.3-32-32V384H64c-17.7 0-32-14.3-32-32V288c-17.7 0-32-14.3-32-32s14.3-32 32-32V160c0-17.7 14.3-32 32-32H96V64zm448 0v64h32c17.7 0 32 14.3 32 32v64c17.7 0 32 14.3 32 32s-14.3 32-32 32v64c0 17.7-14.3 32-32 32H544v64c0 17.7-14.3 32-32 32H480c-17.7 0-32-14.3-32-32V288 224 64c0-17.7 14.3-32 32-32h32c17.7 0 32 14.3 32 32zM416 224v64H224V224H416z" /></svg>
-                                          <p>{breedFound.bred_for.toLowerCase()}
-                                          </p>
-                                        </div>
-                                        <div className='rowDesc'>
-                                          <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0z" /></svg>
-                                          <p>{breedFound.breed_group} groups</p>
-                                        </div>
-                                        <div className='rowDesc'>
-                                          <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M.2 468.9C2.7 493.1 23.1 512 48 512l96 0 320 0c26.5 0 48-21.5 48-48l0-96c0-26.5-21.5-48-48-48l-48 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-80 0c-8.8 0-16-7.2-16-16s7.2-16 16-16l80 0 0-64-80 0c-8.8 0-16-7.2-16-16s7.2-16 16-16l80 0 0-64-80 0c-8.8 0-16-7.2-16-16s7.2-16 16-16l80 0 0-48c0-26.5-21.5-48-48-48L48 0C21.5 0 0 21.5 0 48L0 368l0 96c0 1.7 .1 3.3 .2 4.9z" /></svg>
-                                          <p>{breedFound.height.metric} cm</p>
-                                        </div>
-                                        <div className='rowDesc'>
-                                          <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M128 176a128 128 0 1 1 256 0 128 128 0 1 1 -256 0zM391.8 64C359.5 24.9 310.7 0 256 0S152.5 24.9 120.2 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H391.8zM296 224c0-10.6-4.1-20.2-10.9-27.4l33.6-78.3c3.5-8.1-.3-17.5-8.4-21s-17.5 .3-21 8.4L255.7 184c-22 .1-39.7 18-39.7 40c0 22.1 17.9 40 40 40s40-17.9 40-40z" /></svg>
-                                          <p>{breedFound.weight.metric} kg</p>
-                                        </div>
-                                        <div className='rowDesc'>
-                                          <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M228.3 469.1L47.6 300.4c-4.2-3.9-8.2-8.1-11.9-12.4h87c22.6 0 43-13.6 51.7-34.5l10.5-25.2 49.3 109.5c3.8 8.5 12.1 14 21.4 14.1s17.8-5 22-13.3L320 253.7l1.7 3.4c9.5 19 28.9 31 50.1 31H476.3c-3.7 4.3-7.7 8.5-11.9 12.4L283.7 469.1c-7.5 7-17.4 10.9-27.7 10.9s-20.2-3.9-27.7-10.9zM503.7 240h-132c-3 0-5.8-1.7-7.2-4.4l-23.2-46.3c-4.1-8.1-12.4-13.3-21.5-13.3s-17.4 5.1-21.5 13.3l-41.4 82.8L205.9 158.2c-3.9-8.7-12.7-14.3-22.2-14.1s-18.1 5.9-21.8 14.8l-31.8 76.3c-1.2 3-4.2 4.9-7.4 4.9H16c-2.6 0-5 .4-7.3 1.1C3 225.2 0 208.2 0 190.9v-5.8c0-69.9 50.5-129.5 119.4-141C165 36.5 211.4 51.4 244 84l12 12 12-12c32.6-32.6 79-47.5 124.6-39.9C461.5 55.6 512 115.2 512 185.1v5.8c0 16.9-2.8 33.5-8.3 49.1z" /></svg>
-                                          <p>{breedFound.life_span}</p></div>
-                                        <div class="badge-container">
-                                          {breedFound.temperament?.split(", ").map((adjective, index) => (
-                                            <span key={index} className="badge">
-                                              {adjective}
-                                            </span>
-                                          ))}
-                                        </div>
+                                      <div className='iconDescCloseContainer'>
+                                        <svg onClick={() => { setDogsBreedView(false) }} className="iconDesc iconDescClose" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M64 80c-8.8 0-16 7.2-16 16V416c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V96c0-8.8-7.2-16-16-16H64zM0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zm175 79c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" /></svg>
                                       </div>
-                                      {/* {/* <img className='imgBreed' width="200" src=${breedFound.image.url} alt=${breedFound.name}></img>
-                                     } */}
+                                      <h3>The race info</h3>
+                                      <div className='rowDesc'>
+                                        <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M448 256A192 192 0 1 0 64 256a192 192 0 1 0 384 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 80a80 80 0 1 0 0-160 80 80 0 1 0 0 160zm0-224a144 144 0 1 1 0 288 144 144 0 1 1 0-288zM224 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" /></svg>
+                                        <p>{breedFound.bred_for.toLowerCase()}
+                                        </p>
+                                      </div>
+                                      <div className='rowDesc'>
+                                        <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M309.6 158.5L332.7 19.8C334.6 8.4 344.5 0 356.1 0c7.5 0 14.5 3.5 19 9.5L392 32h52.1c12.7 0 24.9 5.1 33.9 14.1L496 64h56c13.3 0 24 10.7 24 24v24c0 44.2-35.8 80-80 80H464 448 426.7l-5.1 30.5-112-64zM416 256.1L416 480c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V364.8c-24 12.3-51.2 19.2-80 19.2s-56-6.9-80-19.2V480c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V249.8c-28.8-10.9-51.4-35.3-59.2-66.5L1 167.8c-4.3-17.1 6.1-34.5 23.3-38.8s34.5 6.1 38.8 23.3l3.9 15.5C70.5 182 83.3 192 98 192h30 16H303.8L416 256.1zM464 80a16 16 0 1 0 -32 0 16 16 0 1 0 32 0z" /></svg>
+                                        <p>{breedFound.breed_group} groups</p>
+                                      </div>
+                                      <div className='rowDesc'>
+                                        <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M.2 468.9C2.7 493.1 23.1 512 48 512l96 0 320 0c26.5 0 48-21.5 48-48l0-96c0-26.5-21.5-48-48-48l-48 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-64 0 0 80c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-80-80 0c-8.8 0-16-7.2-16-16s7.2-16 16-16l80 0 0-64-80 0c-8.8 0-16-7.2-16-16s7.2-16 16-16l80 0 0-64-80 0c-8.8 0-16-7.2-16-16s7.2-16 16-16l80 0 0-48c0-26.5-21.5-48-48-48L48 0C21.5 0 0 21.5 0 48L0 368l0 96c0 1.7 .1 3.3 .2 4.9z" /></svg>
+                                        <p>{breedFound.height.metric} cm</p>
+                                      </div>
+                                      <div className='rowDesc'>
+                                        <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M128 176a128 128 0 1 1 256 0 128 128 0 1 1 -256 0zM391.8 64C359.5 24.9 310.7 0 256 0S152.5 24.9 120.2 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H391.8zM296 224c0-10.6-4.1-20.2-10.9-27.4l33.6-78.3c3.5-8.1-.3-17.5-8.4-21s-17.5 .3-21 8.4L255.7 184c-22 .1-39.7 18-39.7 40c0 22.1 17.9 40 40 40s40-17.9 40-40z" /></svg>
+                                        <p>{breedFound.weight.metric} kg</p>
+                                      </div>
+                                      <div className='rowDesc'>
+                                        <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M228.3 469.1L47.6 300.4c-4.2-3.9-8.2-8.1-11.9-12.4h87c22.6 0 43-13.6 51.7-34.5l10.5-25.2 49.3 109.5c3.8 8.5 12.1 14 21.4 14.1s17.8-5 22-13.3L320 253.7l1.7 3.4c9.5 19 28.9 31 50.1 31H476.3c-3.7 4.3-7.7 8.5-11.9 12.4L283.7 469.1c-7.5 7-17.4 10.9-27.7 10.9s-20.2-3.9-27.7-10.9zM503.7 240h-132c-3 0-5.8-1.7-7.2-4.4l-23.2-46.3c-4.1-8.1-12.4-13.3-21.5-13.3s-17.4 5.1-21.5 13.3l-41.4 82.8L205.9 158.2c-3.9-8.7-12.7-14.3-22.2-14.1s-18.1 5.9-21.8 14.8l-31.8 76.3c-1.2 3-4.2 4.9-7.4 4.9H16c-2.6 0-5 .4-7.3 1.1C3 225.2 0 208.2 0 190.9v-5.8c0-69.9 50.5-129.5 119.4-141C165 36.5 211.4 51.4 244 84l12 12 12-12c32.6-32.6 79-47.5 124.6-39.9C461.5 55.6 512 115.2 512 185.1v5.8c0 16.9-2.8 33.5-8.3 49.1z" /></svg>
+                                        <p>{breedFound.life_span}</p></div>
+                                      <div className="badge-container">
+                                        {breedFound.temperament?.split(", ").map((adjective, index) => (
+                                          <span key={index} className="badge">
+                                            {adjective}
+                                          </span>
+                                        ))}
+                                      </div>
                                     </div>
                                   }
                                 </div>
                               }
                             </div>
-                            <button className={breedFound ? "hidden" : "buttonModal"} onClick={() => setBreedAndAnim(character.race)} >More about the {character.race}</button>
+                            <button className={dogsBreedView ? "hidden" : "buttonModal"} onClick={() => setBreedAndAnim(character.race)} >More about the {character.race}</button>
                           </div>
                         </TinderCard>
                       </>

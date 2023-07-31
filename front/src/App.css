@@ -189,9 +189,9 @@ nav .navButton:disabled {
 
 .profileContainer h2 {
     margin: 0;
-    padding: 25px;
+    padding: 20px;
     color: #fff;
-    font-size: 35px;
+    font-size: 30px;
 }
 
 .profilePage {
@@ -288,7 +288,7 @@ select {
 }
 
 .emptyDiv {
-    background-color:  #f5f1f1;
+    background-color: #f5f1f1;
     margin: 10px;
     width: 258px;
     height: 386px;
@@ -400,9 +400,19 @@ select {
 
 .card .desc .iconDesc {
     width: 44px;
-    fill:var(--dark-grey-color);
+    fill: var(--dark-grey-color);
     background-color: transparent;
     border: none;
+}
+
+.iconDescCloseContainer {
+    position: relative;
+}
+
+.iconDescClose {
+    position: absolute;
+    bottom: 89px;
+    left: 297px;
 }
 
 .rowDesc {
@@ -426,13 +436,12 @@ select {
 
 .buttonModal {
     border: 2px dotted;
-    padding: 20px;
     position: absolute;
     top: 10%;
     left: 318px;
     background-color: white;
-    height: 120px;
-    width: 120px;
+    height: 100px;
+    width: 100px;
     border-radius: 50%;
     display: inline-block;
     transform-origin: top center;
@@ -462,11 +471,12 @@ select {
     }
 }
 
-.dogsApiContainer .dogsApi{
+.dogsApiContainer .dogsApi {
     font-size: 20px
 }
 
-.dogsApi h3 {
+.dogsApi .apiBreedName {
+    margin-right: 55px;
     text-transform: uppercase;
     font-size: 20px;
     background-image: linear-gradient(45deg, #fd267a, #ff6036);
@@ -480,20 +490,21 @@ select {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 8px;
+    padding: 8px 8px 8px 20px;
     background-color: #f0f0f0;
-  }
-  
-  .badge {
+}
+
+.badge {
     display: inline-block;
-    padding: 4px 8px;
+    padding: 8px 10px;
+    margin-left: 5;
     border-radius: 20px;
-    background-color: #007bff;
+    background-image: linear-gradient(45deg, #fd267a, #ff6036);
     color: #ffffff;
     font-size: 14px;
     font-weight: bold;
-  }
-  
+}
+
 
 .slide-up,
 .slide-down {
@@ -518,6 +529,7 @@ select {
     animation-timing-function: ease-in;
     animation-duration: 1s;
     margin-right: 10px;
+    margin-left: 25px;
 }
 
 .zIndex2 {
@@ -587,6 +599,15 @@ select {
     width: 90px;
 }
 
+.gradientColor {
+    background: linear-gradient(45deg, rgba(253, 38, 122, 0.7), rgba(255, 96, 54, 0.7));
+    background-clip: text;
+    -webkit-background-clip: text;
+    /* For Safari/Chrome */
+    color: transparent;
+}
+
+
 .unvalidate {
     fill: #FF5733;
     width: 48px;
@@ -627,10 +648,6 @@ select {
     }
 }
 
-.imgBreed {
-    filter: grayscale(100%);
-}
-
 /* ---> Chat */
 
 .chatContainer {
@@ -638,7 +655,7 @@ select {
     text-align: left;
     width: 22%;
     min-height: 99.9vh;
-    background-color:#fff
+    background-color: #fff
 }
 
 .chatContainer .choice {
@@ -667,7 +684,7 @@ select {
     margin-left: auto;
 }
 
-.chatHeaderContainer .profile h3{
+.chatHeaderContainer .profile h3 {
     margin-right: 15px;
 }
 
