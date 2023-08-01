@@ -7,7 +7,7 @@ const MatchesList = ({ matches, setMatchClicked }) => {
 
   const [dogMatched, setDogMatched] = useState([])
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
-  const matchedUserIds = matches ? matches.map(({ user_id }) => user_id) : [];
+  const matchedUserIds = matches.length > 0 ? matches.map(({ user_id }) => user_id) : [];
   const userId = cookies.UserId
   let navigate = useNavigate()
 

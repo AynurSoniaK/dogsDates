@@ -59,8 +59,6 @@ const Profile = () => {
         getUser().then(() => getBreeds().then(() => setFetchReady(true)))
     }, [])
 
-    console.log(user,"user")
-
     useEffect(() => {
         setInputData((prevState) => ({
             ...prevState,
@@ -75,7 +73,7 @@ const Profile = () => {
             about: user.about,
             city: user.city,
             matches: user.matches ?? [],
-            noMatches: user.noMatches
+            noMatches: user.noMatches ?? []
         }))
     }, [user])
 

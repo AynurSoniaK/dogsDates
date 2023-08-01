@@ -151,12 +151,20 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (user.length !== 0) {
-      let tab = []
-      user.matches.map(e => tab.push(e.user_id))
-      user.noMatches.map(e => tab.push(e.user_id))
-      setUserMatchesArray(tab)
+      let tab = [];
+      
+      if (user.matches && Array.isArray(user.matches)) {
+        user.matches.map(e => tab.push(e.user_id));
+      }
+  
+      if (user.noMatches && Array.isArray(user.noMatches)) {
+        user.noMatches.map(e => tab.push(e.user_id));
+      }
+  
+      setUserMatchesArray(tab);
     }
-  }, [user])
+  }, [user]);
+  
 
   return (
     <>

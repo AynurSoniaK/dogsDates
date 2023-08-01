@@ -162,6 +162,7 @@ app.put("/update-user", async (req, res) => {
 
     const inputData = req.body.inputData
 
+
     try {
         await client.connect()
         const bdd = client.db('Dogs')
@@ -177,10 +178,8 @@ app.put("/update-user", async (req, res) => {
                 about: inputData.about,
                 city: inputData.city,
                 weight: inputData.weight,
-                // matches: inputData.matches,
-                matches: [],
-                noMatches: []
-                // noMatches: inputData.noMatches
+                matches: inputData.matches,
+                noMatches: inputData.noMatches
             }
         }
         const updateUser = await users.updateOne(query, data)
