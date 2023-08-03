@@ -36,8 +36,11 @@ const LoginModal = ({ setShowModal, signUp }) => {
             window.location.reload()
         }
         catch (error) {
+            if (error.response.status === 489) {
+                setError("Email déjà utilisé")
+            }
             if (error.response.status === 400) {
-                setError("Identifiants incorrects !")
+                setError("Identifiants incorrects")
             }
             else {
                 navigate('/error'); 
