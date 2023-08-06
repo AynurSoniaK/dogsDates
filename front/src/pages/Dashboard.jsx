@@ -4,29 +4,24 @@ import axios from 'axios'
 import Chat from '../components/Chat'
 import ChatHeader from '../components/ChatHeader'
 import { useCookies } from 'react-cookie'
-import Typewriter from 'typewriter-effect';
 import { useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
 
   const [user, setUser] = useState("")
   const [dogsList, setDogsList] = useState([])
-  const [dogsListReady, setDogsListReady] = useState(false)
   const [lastDirection, setLastDirection] = useState("")
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
   const [dogsBreedList, setDogsBreedList] = useState([])
   const [dogsBreedView, setDogsBreedView] = useState(false)
   const dogApiKey = process.env.DOGAPI
   const [breedName, setBreedName] = useState("")
-  const [classAnim, setClassAnim] = useState("")
+  const [classAnim, setClassAnim] = useState("")  
   const [userMatchesArray, setUserMatchesArray] = useState([])
+  const [matchesList, setMatchesList] = useState([]);
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
-
-  // const getAge = birthDate => Math.floor((new Date() - new Date(birthDate).getTime()) / 3.15576e+10)
-
   const user_id = cookies.UserId
-
   const navigate = useNavigate();
 
   const getUser = async () => {
@@ -60,11 +55,6 @@ export const Dashboard = () => {
     }
   }
 
-  useEffect(() => {
-    getUser().then(() => getDogs()).then(() => getDogsApiInfo()).then()
-  }, [])
-
-
   const breedFound = useMemo(() => dogsBreedList.find(e => e.name === breedName), [breedName])
 
   const addMatch = async (swipedUserId) => {
@@ -80,7 +70,6 @@ export const Dashboard = () => {
     }
   }
 
-
   const addNoMatch = async (swipedUserId) => {
     setDogsBreedView(false)
     try {
@@ -93,7 +82,6 @@ export const Dashboard = () => {
       navigate('/error');
     }
   }
-
 
   const swiped = (direction, swipedUserId) => {
     if (direction === "right") {
@@ -139,10 +127,6 @@ export const Dashboard = () => {
     setLastDirection(left)
   }
 
-  const outOfFrame = (name) => {
-    console.log(name + ' left the screen!')
-  }
-
   const setBreedAndAnim = (breed) => {
     setDogsBreedView(true)
     setBreedName(breed)
@@ -152,19 +136,19 @@ export const Dashboard = () => {
   useEffect(() => {
     if (user.length !== 0) {
       let tab = [];
-      
       if (user.matches && Array.isArray(user.matches)) {
         user.matches.map(e => tab.push(e.user_id));
       }
-  
       if (user.noMatches && Array.isArray(user.noMatches)) {
         user.noMatches.map(e => tab.push(e.user_id));
       }
-  
       setUserMatchesArray(tab);
     }
   }, [user]);
-  
+
+  useEffect(() => {
+    getUser().then(() => getDogs()).then(() => getDogsApiInfo()).then()
+  }, [])
 
   return (
     <>
@@ -192,7 +176,6 @@ export const Dashboard = () => {
                           <TinderCard
                             className='swipe'
                             onSwipe={(right) => swiped(right, character.user_id)}
-                            onCardLeftScreen={() => outOfFrame(character.name)}
                             preventSwipe={['right', 'left']}
                           >
                             <div

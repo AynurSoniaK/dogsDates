@@ -25,7 +25,7 @@ const MatchesList = ({ matches, setMatchClicked }) => {
 
   useEffect(() => {
     getMatches()
-  }, [])
+  }, [matches])
 
   const bothMatched = dogMatched?.filter(
     (dog) => dog.matches.filter((profile) => profile.user_id == userId).length > 0)
