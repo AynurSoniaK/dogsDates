@@ -254,6 +254,7 @@ nav .navButton:disabled {
     border-radius: 10px;
     text-align: center;
     flex: 1;
+    cursor: pointer;
 }
 
 .profileContainer form .inputsContainer input[type="radio"] {
