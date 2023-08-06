@@ -90,7 +90,8 @@ button {
 .secondaryButton:hover {
     background-color: #fd267a;
     border-color: #fd267a;
-    color: white
+    color: white;
+    cursor:pointer
 }
 
 .logo {
