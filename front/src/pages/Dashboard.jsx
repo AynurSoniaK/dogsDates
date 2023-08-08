@@ -10,15 +10,15 @@ export const Dashboard = () => {
 
   const [user, setUser] = useState("")
   const [dogsList, setDogsList] = useState([])
-  const [lastDirection, setLastDirection] = useState("")
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
   const [dogsBreedList, setDogsBreedList] = useState([])
   const [dogsBreedView, setDogsBreedView] = useState(false)
   const dogApiKey = process.env.DOGAPI
   const [breedName, setBreedName] = useState("")
-  const [classAnim, setClassAnim] = useState("")  
+  const [classAnim, setClassAnim] = useState("")
   const [userMatchesArray, setUserMatchesArray] = useState([])
-  const [matchesList, setMatchesList] = useState([]);
+  const [swipedUserInfo, setSwipedUserInfo] = useState([]);
+  const [matchText, setMatchText] = useState(false);
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
   const user_id = cookies.UserId
@@ -83,38 +83,38 @@ export const Dashboard = () => {
     }
   }
 
-  const swiped = (direction, swipedUserId) => {
-    if (direction === "right") {
-      addMatch(swipedUserId)
-      setBreedName('')
-      setClassAnim('')
-      setDogsList(current =>
-        current.filter(obj => {
-          return obj.user_id !== swipedUserId;
-        }))
+  const rightClick = async (right, swipedUserId) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user`, { params: { swipedUserId } })
+      setSwipedUserInfo(response.data.matches)
+      const isUserIdInArray = swipedUserInfo.some(item => item.user_id === user_id);
+      if (isUserIdInArray) {
+        setMatchText(true);
+        const timer = setTimeout(() => {
+          setMatchText(false);
+        }, 3000);
+        setTimeout(() => {
+          clearTimeout(timer);
+        }, 3000);
+        addMatch(swipedUserId)
+        setBreedName('')
+        setClassAnim('')
+      } else {
+        addMatch(swipedUserId)
+        setBreedName('')
+        setClassAnim('')
+        setDogsList(current =>
+          current.filter(obj => {
+            return obj.user_id !== swipedUserId;
+          }))
+      }
     }
-    if (direction === "left") {
-      addNoMatch(swipedUserId)
-      setBreedName('')
-      setClassAnim('')
-      setDogsList(current =>
-        current.filter(obj => {
-          return obj.user_id !== swipedUserId;
-        }))
+    catch (err) {
+      navigate('/error');
     }
-    setLastDirection(direction)
   }
+  console.log(matchText,"matchText")
 
-  const rightClick = (right, swipedUserId) => {
-    addMatch(swipedUserId)
-    setBreedName('')
-    setClassAnim('')
-    setDogsList(current =>
-      current.filter(obj => {
-        return obj.user_id !== swipedUserId;
-      }))
-    setLastDirection(right)
-  }
 
   const leftClick = (left, swipedUserId) => {
     addNoMatch(swipedUserId)
@@ -124,7 +124,6 @@ export const Dashboard = () => {
       current.filter(obj => {
         return obj.user_id !== swipedUserId;
       }))
-    setLastDirection(left)
   }
 
   const setBreedAndAnim = (breed) => {
@@ -144,7 +143,7 @@ export const Dashboard = () => {
       }
       setUserMatchesArray(tab);
     }
-  }, [user]);
+  }, [user, matchText]);
 
   useEffect(() => {
     getUser().then(() => getDogs()).then(() => getDogsApiInfo()).then()
@@ -175,7 +174,6 @@ export const Dashboard = () => {
                         <>
                           <TinderCard
                             className='swipe'
-                            onSwipe={(right) => swiped(right, character.user_id)}
                             preventSwipe={['right', 'left']}
                           >
                             <div
@@ -184,6 +182,11 @@ export const Dashboard = () => {
                               <div className='nameContainer'>
                                 <h3 className={dogsBreedView ? "name gradientColor" : character.gender === "female" ? 'name female' : 'name male'}>{dogsBreedView ? breedFound.name : character.name}</h3>
                               </div>
+                              {matchText &&
+                                <div className='matchText'>
+                                  <h3 className='gradientColor'>It's a match !</h3> :
+                                </div>
+                              }
                               <div className='buttonValidateContainer'>
                                 <button
                                   onClick={(left) => leftClick(left, character.user_id)}

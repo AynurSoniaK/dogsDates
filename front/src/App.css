@@ -90,7 +90,8 @@ button {
 .secondaryButton:hover {
     background-color: #fd267a;
     border-color: #fd267a;
-    color: white
+    color: white;
+    cursor:pointer
 }
 
 .logo {
@@ -586,6 +587,15 @@ select {
     right: 40px;
     background-color: transparent;
     border: none;
+}
+
+.matchText {
+    background-color: #ffff;
+    position: relative;
+    height: 24px;
+    top: 353px;
+    margin: 20px;
+    border-radius: 20px;
 }
 
 .buttonValidateContainer {
