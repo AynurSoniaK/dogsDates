@@ -589,6 +589,15 @@ select {
     border: none;
 }
 
+.matchText {
+    background-color: #ffff;
+    position: relative;
+    height: 24px;
+    top: 353px;
+    margin: 20px;
+    border-radius: 20px;
+}
+
 .buttonValidateContainer {
     background-color: #ffff;
     position: relative;
