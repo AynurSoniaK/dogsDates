@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useRef  } from 'react'
 import TinderCard from 'react-tinder-card'
 import axios from 'axios'
 import Chat from '../components/Chat'
@@ -19,6 +19,7 @@ export const Dashboard = () => {
   const [userMatchesArray, setUserMatchesArray] = useState([])
   const [swipedUserInfo, setSwipedUserInfo] = useState([]);
   const [matchText, setMatchText] = useState(false);
+  const [lastDirection, setLastDirection] = useState()
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
   const user_id = cookies.UserId
@@ -83,7 +84,7 @@ export const Dashboard = () => {
     }
   }
 
-  const rightClick = async (right, swipedUserId) => {
+  const textMatch = async (swipedUserId) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/user`, { params: { swipedUserId } })
       setSwipedUserInfo(response.data.matches)
@@ -92,29 +93,26 @@ export const Dashboard = () => {
         setMatchText(true);
         const timer = setTimeout(() => {
           setMatchText(false);
-        }, 3000);
+        }, 1000);
         setTimeout(() => {
           clearTimeout(timer);
-        }, 3000);
-        addMatch(swipedUserId)
-        setBreedName('')
-        setClassAnim('')
-      } else {
-        addMatch(swipedUserId)
-        setBreedName('')
-        setClassAnim('')
-        setDogsList(current =>
-          current.filter(obj => {
-            return obj.user_id !== swipedUserId;
-          }))
+        }, 1000);
       }
-    }
-    catch (err) {
+    } catch (err) {
       navigate('/error');
     }
   }
-  console.log(matchText,"matchText")
 
+  const rightClick = async (dir, swipedUserId) => {
+    //textMatch(swipedUserId)
+    addMatch(swipedUserId)
+    setBreedName('')
+    setClassAnim('')
+    setDogsList(current =>
+      current.filter(obj => {
+        return obj.user_id !== swipedUserId;
+      }))
+  }
 
   const leftClick = (left, swipedUserId) => {
     addNoMatch(swipedUserId)
@@ -143,7 +141,7 @@ export const Dashboard = () => {
       }
       setUserMatchesArray(tab);
     }
-  }, [user, matchText]);
+  }, [user]);
 
   useEffect(() => {
     getUser().then(() => getDogs()).then(() => getDogsApiInfo()).then()
@@ -175,24 +173,25 @@ export const Dashboard = () => {
                           <TinderCard
                             className='swipe'
                             preventSwipe={['right', 'left']}
-                          >
+                            onClick={(dir) => leftClick(dir, character.user_id)}
+                            >
                             <div
                               style={{ backgroundImage: !dogsBreedView & character.url ? 'url(' + character.url + ')' : dogsBreedView && breedFound.image.url ? 'url(' + breedFound.image.url + ')' : 'url(' + character.url + ')' }}
                               className='card'>
                               <div className='nameContainer'>
                                 <h3 className={dogsBreedView ? "name gradientColor" : character.gender === "female" ? 'name female' : 'name male'}>{dogsBreedView ? breedFound.name : character.name}</h3>
                               </div>
-                              {matchText &&
+                              {/* {matchText &&
                                 <div className='matchText'>
                                   <h3 className='gradientColor'>It's a match !</h3> :
                                 </div>
-                              }
+                              } */}
                               <div className='buttonValidateContainer'>
                                 <button
-                                  onClick={(left) => leftClick(left, character.user_id)}
+                                  onClick={(dir) => leftClick(dir, character.user_id)}
                                   className="unvalidate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM512 256c0 141.4-114.6 256-256 256S0 397.4 0 256S114.6 0 256 0S512 114.6 512 256z" /></svg></button>
                                 <button
-                                  onClick={(right) => rightClick(right, character.user_id)}
+                                  onClick={(dir) => rightClick(dir, character.user_id)}
                                   className="validate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" /></svg></button>
                               </div>
                               <div className='desc'>

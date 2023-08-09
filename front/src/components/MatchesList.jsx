@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useCookies } from "react-cookie"
 import { useNavigate } from 'react-router-dom'
 
-const MatchesList = ({ matches, setMatchClicked }) => {
+const MatchesList = ({ matches, setMatchClicked, onChildDataChange }) => {
 
   const [dogMatched, setDogMatched] = useState([])
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
@@ -19,16 +19,25 @@ const MatchesList = ({ matches, setMatchClicked }) => {
       setDogMatched(response.data)
     }
     catch (error) {
-      navigate('/error'); 
+      navigate('/error');
     }
   }
 
-  useEffect(() => {
-    getMatches()
-  }, [matches])
+  const sendDataToParent = () => {
+    onChildDataChange(bothMatched);
+  };
 
-  const bothMatched = dogMatched?.filter(
-    (dog) => dog.matches.filter((profile) => profile.user_id == userId).length > 0)
+  const bothMatched = dogMatched.length > 0 ? dogMatched.filter(
+    (dog) => dog.matches.filter((profile) => profile.user_id == userId).length > 0) : []
+
+    useEffect(() => {
+      getMatches();
+    }, [matches]);
+    
+    useEffect(() => {
+      sendDataToParent(); 
+    }, [bothMatched.length]);
+    
 
   return (
     <div className='matchesList'>
@@ -40,7 +49,7 @@ const MatchesList = ({ matches, setMatchClicked }) => {
           <h3>{el.name}</h3>
         </div>
       )) :
-        <h4 className='noSwipeYet'>you have no match yet !</h4>
+        <h4 className='noSwipeYet gradientColor'>you have no match yet</h4>
       }
     </div>
   )

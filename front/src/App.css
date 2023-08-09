@@ -630,6 +630,15 @@ select {
     border: none;
 }
 
+@keyframes blink {
+    0%, 100% {
+      background-color: pink;
+    }
+    50% {
+      background-color: white;
+    }
+  }
+
 @-webkit-keyframes slideIn {
     0% {
         transform: translateX(100px);
@@ -674,9 +683,14 @@ select {
     border: none;
     font-size: 20px;
     padding: 10px;
-    margin: 5px;
+    margin: 10px;
     background-color: #fff;
-    border-bottom: 3px solid #ff512f;
+}
+
+.chatContainer .highlight {
+    background-color: white;
+    border-radius: 20px;
+    animation: blink 0.5s 4;
 }
 
 .chatContainer .choice:disabled {

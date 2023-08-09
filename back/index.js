@@ -139,7 +139,7 @@ app.get("/user", async (req, res) => {
         useUnifiedTopology: true,
     });
 
-    const idUser = req.query.user_id
+    const idUser = req.query.swipedUserId ?? req.query.user_id
 
     try {
         await client.connect()
@@ -278,5 +278,4 @@ app.post("/addMessage", async (req, res) => {
     }
 })
 
-// Export the Express API
 module.exports = app;
