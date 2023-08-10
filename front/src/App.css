@@ -14,6 +14,7 @@ body {
     margin: 0;
     text-align: center;
     overflow: hidden;
+    color: var(--dark-grey-color)
 }
 
 * {
@@ -101,7 +102,6 @@ button {
 }
 
 .logoHeader {
-    width: 2.5%;
     fill: white;
     margin: 20px;
 }
@@ -209,6 +209,14 @@ nav .navButton:disabled {
     justify-content: center;
     border-radius: 20px;
     background-color: #fff;
+}
+
+.profileBack {
+    border: none;
+    font-size: 16px;
+    align-items: center;
+    margin-top: 16px;
+    cursor: pointer;
 }
 
 .profileContainer label {
@@ -361,6 +369,7 @@ select {
 
 .card .name {
     font-size: 32px;
+    color: var(--dark-grey-color);
     padding: 15px;
     text-transform: uppercase;
 }
@@ -476,17 +485,6 @@ select {
 
 .dogsApiContainer .dogsApi {
     font-size: 20px
-}
-
-.dogsApi .apiBreedName {
-    margin-right: 55px;
-    text-transform: uppercase;
-    font-size: 20px;
-    background-image: linear-gradient(45deg, #fd267a, #ff6036);
-    color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
-    background-clip: text;
 }
 
 .badge-container {
