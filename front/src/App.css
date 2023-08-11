@@ -318,6 +318,14 @@ select {
     background-image: url(../public/bgPows.png);
 }
 
+.clip {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .hidden {
     display: none;
 }
