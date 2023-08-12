@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useCookies } from "react-cookie"
 import { useNavigate } from 'react-router-dom'
 
-const MatchesList = ({ matches, setMatchClicked, onChildDataChange }) => {
+const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, matchlistData, setMatchlistData  }) => {
 
   const [dogMatched, setDogMatched] = useState([])
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
@@ -24,7 +24,7 @@ const MatchesList = ({ matches, setMatchClicked, onChildDataChange }) => {
   }
 
   const sendDataToParent = () => {
-    onChildDataChange(bothMatched);
+    onChildMatchListChange(bothMatched);
   };
 
   const bothMatched = dogMatched.length > 0 ? dogMatched.filter(

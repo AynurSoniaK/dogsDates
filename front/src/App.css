@@ -430,9 +430,17 @@ select {
 
 .iconDescClose {
     position: absolute;
-    bottom: 89px;
+    bottom: 69px;
     left: 297px;
     cursor: pointer
+}
+
+.iconDescCloseProfil {
+    position: absolute;
+    top: 17px;
+    right: -363px;
+    cursor: pointer;
+    z-index: 1;
 }
 
 .rowDesc {
