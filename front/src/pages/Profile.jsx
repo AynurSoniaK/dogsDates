@@ -72,7 +72,7 @@ const Profile = () => {
             weight: user.weight,
             about: user.about,
             city: user.city,
-            matches: user.matches ?? [],
+            matches:  [],
             noMatches: user.noMatches ?? []
         }))
     }, [user])
