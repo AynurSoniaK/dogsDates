@@ -3,11 +3,14 @@ import axios from 'axios'
 import { useCookies } from "react-cookie"
 import { useNavigate } from 'react-router-dom'
 
-const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, matchlistData, setMatchlistData  }) => {
+const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeChat, setCloseChat }) => {
 
   const [dogMatched, setDogMatched] = useState([])
   const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
   const matchedUserIds = matches.length > 0 ? matches.map(({ user_id }) => user_id) : [];
+  const [matchListReady, setMatchListReady] = useState(false)
+  const [bothMatchedReady, setBothMatchedReady] = useState(false)
+
   const userId = cookies.UserId
   let navigate = useNavigate()
 
@@ -17,6 +20,7 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, matchli
         params: { dogsIds: JSON.stringify(matchedUserIds) }
       })
       setDogMatched(response.data)
+      setMatchListReady(true)
     }
     catch (error) {
       navigate('/error');
@@ -25,33 +29,47 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, matchli
 
   const sendDataToParent = () => {
     onChildMatchListChange(bothMatched);
+    setBothMatchedReady(true)
   };
 
   const bothMatched = dogMatched.length > 0 ? dogMatched.filter(
     (dog) => dog.matches.filter((profile) => profile.user_id == userId).length > 0) : []
 
-    useEffect(() => {
+  useEffect(() => {
+    if (!closeChat) {
       getMatches();
-    }, [matches]);
-    
-    useEffect(() => {
-      sendDataToParent(); 
-    }, [bothMatched.length]);
-    
+    }
+    if(closeChat) {
+      setMatchListReady(true)
+    }
+  }, [matches, closeChat]);
+
+  useEffect(() => {
+  }, [matchListReady]);
+
+  useEffect(() => {
+    if(matchListReady){
+      sendDataToParent();
+    }
+  }, [bothMatched.length,matchListReady]);
+
 
   return (
-    <div className='matchesList'>
-      {bothMatched.length > 0 ? bothMatched.map((el, index) => (
-        <div key={index} style={{ marginLeft: "10px" }} onClick={() => setMatchClicked(el)}>
-          <div className="imgContainer">
-            <img src={el.url} alt="profile-pics" />
+    <>{matchListReady &&
+      <div className='matchesList'>
+        {bothMatched.length > 0 && bothMatchedReady ? bothMatched.map((el, index) => (
+          <div key={index} style={{ marginLeft: "10px" }} onClick={() => setMatchClicked(el)}>
+            <div className="imgContainer">
+              <img src={el.url} alt="profile-pics" />
+            </div>
+            <h3>{el.name}</h3>
           </div>
-          <h3>{el.name}</h3>
-        </div>
-      )) :
-        <h4 className='noSwipeYet gradientColor'>you have no match yet</h4>
-      }
-    </div>
+        )) :
+          <h4 className='noSwipeYet gradientColor'>you have no match yet</h4>
+        }
+      </div>
+    }
+    </>
   )
 }
 
