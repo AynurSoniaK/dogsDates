@@ -18,11 +18,11 @@ export const Dashboard = () => {
   const [breedName, setBreedName] = useState("")
   const [classAnim, setClassAnim] = useState("")
   const [userMatchesArray, setUserMatchesArray] = useState([])
-  const [swipedUserInfo, setSwipedUserInfo] = useState([]);
-  const [matchText, setMatchText] = useState(false);
+  //const [swipedUserInfo, setSwipedUserInfo] = useState([]);
+  //const [matchText, setMatchText] = useState(false);
   const [fetchReady, setFetchReady] = useState(false)
   const [matchClickedChat, setMatchClickedChat] = useState("")
-
+  const [closeChat, setCloseChat] = useState(false);
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
   const user_id = cookies.UserId
@@ -87,6 +87,23 @@ export const Dashboard = () => {
     }
   }
 
+  const deleteUserMatch = async (matchUserId) => {
+    try {
+      await axios.put(`${process.env.REACT_APP_API_URL}/deleteMatch`, {
+          user_id,
+          matchUserId,
+      });
+      getUser()
+      setMatchClickedChat(false)
+      setCloseChat(true)
+    } catch (error) {
+      console.error("Error while deleting match", error);
+    }
+    setTimeout(() => {
+      setCloseChat(false)
+    }, 6000);
+  };
+
   const rightClick = async (dir, swipedUserId) => {
     //textMatch(swipedUserId)
     addMatch(swipedUserId)
@@ -148,7 +165,7 @@ export const Dashboard = () => {
             </div>}
           {fetchReady &&
             <>
-              <Chat user={user} setMatchClickedChat={setMatchClickedChat} />
+              <Chat user={user} setMatchClickedChat={setMatchClickedChat} closeChat={closeChat} setCloseChat={setCloseChat}/>
               {matchClickedChat ?
                 <>
                   <div className="swipeContainer">
@@ -162,7 +179,7 @@ export const Dashboard = () => {
                           className='card'>
                           <div className='nameContainer'>
                             <div className='iconDescCloseContainer'>
-                              <svg onClick={() => { setMatchClickedChat(false) }} className="iconDesc iconDescCloseProfil" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" /></svg>
+                              <svg onClick={() => { setMatchClickedChat(false); setCloseChat(true) }} className="iconDesc iconDescCloseProfil" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" /></svg>
                             </div>
                             <h3 className="name">{matchClickedChat.name}</h3>
                           </div>
@@ -198,6 +215,9 @@ export const Dashboard = () => {
                               <div className='rowDesc'>
                                 <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" /></svg>
                                 <p>{matchClickedChat.city}</p>
+                              </div>
+                              <div className='removeMatch'>
+                              <button onClick={() => deleteUserMatch(matchClickedChat.user_id)}>Remove {matchClickedChat.name}</button>
                               </div>
                             </div>
                           </div>

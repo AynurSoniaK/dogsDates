@@ -21,7 +21,7 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
     res.send('Hey this is my API running 🥳')
-  })
+})
 
 app.post("/signin", async (req, res) => {
     const client = new MongoClient(uri, {
@@ -243,6 +243,35 @@ app.put("/addNoMatch", async (req, res) => {
         await client.close()
     }
 })
+
+app.put("/deleteMatch", async (req, res) => {
+    const client = new MongoClient(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+
+    const { user_id, matchUserId } = req.body;
+    
+    try {
+        await client.connect();
+        const bdd = client.db("Dogs");
+        const users = bdd.collection("users");
+        const query = { user_id };
+        const data = {
+            $pull: {
+                matches: { user_id: matchUserId },
+            },
+        };
+
+        const updateUser = await users.updateOne(query, data);
+        res.send(updateUser);
+    } catch (error) {
+        res.status(500).send("An error occurred");
+    } finally {
+        await client.close();
+    }
+});
+
 
 app.get("/messages", async (req, res) => {
     const client = new MongoClient(uri);
