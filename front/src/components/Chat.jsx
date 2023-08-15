@@ -12,8 +12,6 @@ const Chat = ({ user, setMatchClickedChat, closeChat, setCloseChat }) => {
         setCloseChat(false)
     };
 
-    console.log()
-
     //close the chat to see the list of matches
     useEffect(() => {
         if (closeChat) {
