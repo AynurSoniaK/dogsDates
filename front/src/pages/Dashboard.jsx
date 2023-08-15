@@ -12,7 +12,7 @@ export const Dashboard = () => {
 
   const [user, setUser] = useState("")
   const [dogsList, setDogsList] = useState([])
-  const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
+  const [cookies] = useCookies(['cookie-user'])
   const [dogsBreedList, setDogsBreedList] = useState([])
   const [dogsBreedView, setDogsBreedView] = useState(false)
   const dogApiKey = process.env.DOGAPI
@@ -43,13 +43,32 @@ export const Dashboard = () => {
 
   const getDogs = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/users`, { params: { user_id } })
-      setDogsList(response.data)
-    }
-    catch (err) {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/users`, { params: { user_id } });
+
+      // Create an object to track the count of each race
+      const raceCount = {};
+
+      // Iterate through the response data and update the race count object
+      response.data.forEach(dog => {
+        const race = dog.race;
+        if (race in raceCount) {
+          raceCount[race] += 1;
+        } else {
+          raceCount[race] = 1;
+        }
+      });
+
+      // Update the dogsList with count property
+      const updatedDogsList = response.data.map(dog => ({
+        ...dog,
+        count: raceCount[dog.race] // Replace 'race' with the actual property name
+      }));
+
+      setDogsList(updatedDogsList);
+    } catch (err) {
       navigate('/error');
     }
-  }
+  };
 
   const getDogsApiInfo = async () => {
     try {
@@ -93,8 +112,8 @@ export const Dashboard = () => {
   const deleteUserMatch = async (matchUserId) => {
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/deleteMatch`, {
-          user_id,
-          matchUserId,
+        user_id,
+        matchUserId,
       });
       getUser()
       setMatchClickedChat(false)
@@ -134,6 +153,17 @@ export const Dashboard = () => {
     setClassAnim("fade-in")
   }
 
+  const numberOfSpecificRace = () => {
+    const specificRace = "Labrador Retriever";
+    const count = dogsList.filter(dog => dog.race === specificRace).length;
+  }
+
+  console.log(dogsList)
+
+  useEffect(() => {
+    getUser().then(() => getDogs()).then(() => getDogsApiInfo()).then(() => setFetchReady(true))
+  }, [])
+
   useEffect(() => {
     if (user.length !== 0) {
       let tab = [];
@@ -146,10 +176,6 @@ export const Dashboard = () => {
       setUserMatchesArray(tab);
     }
   }, [user]);
-
-  useEffect(() => {
-    getUser().then(() => getDogs()).then(() => getDogsApiInfo()).then(() => setFetchReady(true))
-  }, [])
 
   return (
     user ?
@@ -168,7 +194,7 @@ export const Dashboard = () => {
             </div>}
           {fetchReady &&
             <>
-              <Chat user={user} setMatchClickedChat={setMatchClickedChat} closeChat={closeChat} setCloseChat={setCloseChat}/>
+              <Chat user={user} setMatchClickedChat={setMatchClickedChat} closeChat={closeChat} setCloseChat={setCloseChat} />
               {matchClickedChat ?
                 <>
                   <div className="swipeContainer">
@@ -220,7 +246,7 @@ export const Dashboard = () => {
                                 <p>{matchClickedChat.city}</p>
                               </div>
                               <div className='removeMatch'>
-                              <button onClick={() => deleteUserMatch(matchClickedChat.user_id)}>Remove {matchClickedChat.name}</button>
+                                <button onClick={() => deleteUserMatch(matchClickedChat.user_id)}>Remove {matchClickedChat.name}</button>
                               </div>
                             </div>
                           </div>
@@ -251,7 +277,7 @@ export const Dashboard = () => {
                                 onClick={(dir) => leftClick(dir, character.user_id)}
                               >
                                 <div
-                                  style={{ backgroundImage: dogsBreedView ?  backgroundImageDog : 'url(' + character.url + ')' }}
+                                  style={{ backgroundImage: dogsBreedView ? backgroundImageDog : 'url(' + character.url + ')' }}
                                   className='card'>
                                   <div className='nameContainer'>
                                     <h3 className="name">{dogsBreedView ? breedFound.name : character.name}</h3>
@@ -261,22 +287,27 @@ export const Dashboard = () => {
                                   <h3 className='gradientColor'>It's a match !</h3> :
                                 </div>
                               } */}
-                                  <div className='buttonValidateContainer'>
-                                    {!dogsBreedView ?
-                                      <>
-                                        <button
-                                          onClick={(dir) => leftClick(dir, character.user_id)}
-                                          className="unvalidate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM512 256c0 141.4-114.6 256-256 256S0 397.4 0 256S114.6 0 256 0S512 114.6 512 256z" /></svg></button>
-                                        <button
-                                          onClick={(dir) => rightClick(dir, character.user_id)}
-                                          className="validate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" /></svg></button>
-                                      </> : <button className='profileBack'
-                                        onClick={() => setDogsBreedView(false)}
-                                      >Back to {character.name}'s profile</button>}
-                                  </div>
+                                  {!dogsBreedView ?
+                                    <div className='buttonValidateContainer'>
+                                      <button
+                                        onClick={(dir) => leftClick(dir, character.user_id)}
+                                        className="unvalidate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM512 256c0 141.4-114.6 256-256 256S0 397.4 0 256S114.6 0 256 0S512 114.6 512 256z" /></svg></button>
+                                      <button
+                                        onClick={(dir) => rightClick(dir, character.user_id)}
+                                        className="validate"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M243.8 339.8C232.9 350.7 215.1 350.7 204.2 339.8L140.2 275.8C129.3 264.9 129.3 247.1 140.2 236.2C151.1 225.3 168.9 225.3 179.8 236.2L224 280.4L332.2 172.2C343.1 161.3 360.9 161.3 371.8 172.2C382.7 183.1 382.7 200.9 371.8 211.8L243.8 339.8zM512 256C512 397.4 397.4 512 256 512C114.6 512 0 397.4 0 256C0 114.6 114.6 0 256 0C397.4 0 512 114.6 512 256zM256 48C141.1 48 48 141.1 48 256C48 370.9 141.1 464 256 464C370.9 464 464 370.9 464 256C464 141.1 370.9 48 256 48z" /></svg></button>
+                                    </div> :
+                                    <div className='centeredContainer'>
+                                    <button className='profileBack'
+                                      onClick={() => setDogsBreedView(false)}
+                                    >Back to {character.name}'s profile
+                                    </button>
+                                    </div>}
                                   <div className='desc'>
                                     {!dogsBreedView ?
                                       <div>
+                                        <div className='centeredContainer'>
+                                          <button className={dogsBreedView ? "hidden" : "buttonModal"} onClick={() => setBreedAndAnim(character.race)} >More about the {character.race}</button>
+                                        </div>
                                         <h3>{character.name}'s info</h3>
                                         <div className='rowDesc'>
                                           <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><path d="M176 288a112 112 0 1 0 0-224 112 112 0 1 0 0 224zM352 176c0 86.3-62.1 158.1-144 173.1V384h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H208v32c0 17.7-14.3 32-32 32s-32-14.3-32-32V448H112c-17.7 0-32-14.3-32-32s14.3-32 32-32h32V349.1C62.1 334.1 0 262.3 0 176C0 78.8 78.8 0 176 0s176 78.8 176 176zM271.9 360.6c19.3-10.1 36.9-23.1 52.1-38.4c20 18.5 46.7 29.8 76.1 29.8c61.9 0 112-50.1 112-112s-50.1-112-112-112c-7.2 0-14.3 .7-21.1 2c-4.9-21.5-13-41.7-24-60.2C369.3 66 384.4 64 400 64c37 0 71.4 11.4 99.8 31l20.6-20.6L487 41c-6.9-6.9-8.9-17.2-5.2-26.2S494.3 0 504 0H616c13.3 0 24 10.7 24 24V136c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-33.4-33.4L545 140.2c19.5 28.4 31 62.7 31 99.8c0 97.2-78.8 176-176 176c-50.5 0-96-21.3-128.1-55.4z" /></svg>
@@ -302,6 +333,9 @@ export const Dashboard = () => {
                                         <div className='rowDesc'>
                                           <svg className="iconDesc" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z" /></svg>
                                           <p>{character.city}</p>
+                                        </div>
+                                        <div className='countRace'>
+                                          <p>Number of {character.race} on DogsDates : {character.count}</p>
                                         </div>
                                       </div>
                                       :
@@ -344,7 +378,6 @@ export const Dashboard = () => {
                                       </div>
                                     }
                                   </div>
-                                  <button className={dogsBreedView ? "hidden" : "buttonModal"} onClick={() => setBreedAndAnim(character.race)} >More about the {character.race}</button>
                                 </div>
                               </TinderCard>
                             </>

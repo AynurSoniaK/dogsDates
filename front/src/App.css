@@ -212,10 +212,25 @@ nav .navButton:disabled {
 }
 
 .profileBack {
-    border: none;
+    border: 1px solid pink;
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
     font-size: 16px;
-    align-items: center;
     cursor: pointer;
+    position: absolute;
+    bottom: 26px;
+}
+
+.countRace {
+    position: relative;
+    bottom: -88px;
+    font-size:13px
+}
+
+.profileBack:hover {
+    border: none;
+    background-color: pink;
 }
 
 .profileContainer label {
@@ -298,7 +313,7 @@ select {
 
 .emptyDiv {
     background-color: #f5f1f1;
-    margin: 10px;
+    margin: 20px 10px;
     width: 258px;
     height: 386px;
     border-radius: var(--main-border-radius);
@@ -432,7 +447,7 @@ select {
 
 .iconDescClose {
     position: absolute;
-    bottom: 69px;
+    bottom: 64px;
     left: 297px;
     cursor: pointer
 }
@@ -481,41 +496,24 @@ select {
     bottom: 0;
 }
 
-.buttonModal {
-    border: 2px dotted;
-    position: absolute;
-    top: 10%;
-    left: 318px;
-    background-color: white;
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-    display: inline-block;
-    transform-origin: top center;
-    animation: swing 2s ease infinite;
-    animation-iteration-count: 1
+.centeredContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-@keyframes swing {
-    20% {
-        transform: rotate(10deg);
-    }
+.buttonModal {
+    border: 1px solid  pink;
+    position: absolute;
+    top: 5%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px;
+}
 
-    40% {
-        transform: rotate(-5deg);
-    }
-
-    60% {
-        transform: rotate(5deg);
-    }
-
-    80% {
-        transform: rotate(-5deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
-    }
+.buttonModal:hover {
+    border: none;
+    background-color: pink;
 }
 
 .dogsApiContainer .dogsApi {
@@ -599,24 +597,11 @@ select {
     animation-duration: 0.5s;
 }
 
-/* Animation de machine à écrire */
-@keyframes typing {
-    from {
-        width: 0;
-        /* Commencer avec une largeur de 0 */
-    }
-
-    to {
-        width: 100%;
-        /* Finir avec la largeur complète */
-    }
-}
-
 .validate {
     fill: #50C878;
     width: 50px;
     position: absolute;
-    top: 8px;
+    top: 11px;
     right: 40px;
     background-color: transparent;
     border: none;
@@ -657,7 +642,7 @@ select {
     fill: #FF5733;
     width: 48px;
     position: absolute;
-    top: 8px;
+    top: 11px;
     left: 40px;
     background-color: transparent;
     border: none;

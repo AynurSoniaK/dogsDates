@@ -19,8 +19,10 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeCh
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/dogsMatches`, {
         params: { dogsIds: JSON.stringify(matchedUserIds) }
       })
-      setDogMatched(response.data)
-      setMatchListReady(true)
+      if (response.status = 200) {
+        setDogMatched(response.data)
+        setMatchListReady(true)
+      }
     }
     catch (error) {
       navigate('/error');
@@ -39,7 +41,7 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeCh
     if (!closeChat) {
       getMatches();
     }
-    if(closeChat) {
+    if (closeChat) {
       setMatchListReady(true)
     }
   }, [matches, closeChat]);
@@ -48,10 +50,10 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeCh
   }, [matchListReady]);
 
   useEffect(() => {
-    if(matchListReady){
+    if (matchListReady) {
       sendDataToParent();
     }
-  }, [bothMatched.length,matchListReady]);
+  }, [bothMatched.length, matchListReady]);
 
 
   return (
