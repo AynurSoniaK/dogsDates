@@ -6,6 +6,7 @@ import ChatHeader from '../components/ChatHeader'
 import { useCookies } from 'react-cookie'
 import { useNavigate } from 'react-router-dom';
 import ClipLoader from "react-spinners/ClipLoader"
+import dogImage from '../images/chien.png';
 
 export const Dashboard = () => {
 
@@ -27,6 +28,8 @@ export const Dashboard = () => {
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' };
   const user_id = cookies.UserId
   const navigate = useNavigate();
+  const backgroundImageDog = `url(${dogImage})`;
+
 
   const getUser = async () => {
     try {
@@ -175,7 +178,7 @@ export const Dashboard = () => {
                         preventSwipe={['right', 'left']}
                       >
                         <div
-                          style={{ backgroundImage: !dogsBreedView & matchClickedChat.url ? 'url(' + matchClickedChat.url + ')' : dogsBreedView && breedFound.image.url ? 'url(' + breedFound.image.url + ')' : 'url(' + matchClickedChat.url + ')' }}
+                          style={{ backgroundImage: 'url(' + matchClickedChat.url + ')' }}
                           className='card'>
                           <div className='nameContainer'>
                             <div className='iconDescCloseContainer'>
@@ -248,7 +251,7 @@ export const Dashboard = () => {
                                 onClick={(dir) => leftClick(dir, character.user_id)}
                               >
                                 <div
-                                  style={{ backgroundImage: !dogsBreedView & character.url ? 'url(' + character.url + ')' : dogsBreedView && breedFound.image.url ? 'url(' + breedFound.image.url + ')' : 'url(' + character.url + ')' }}
+                                  style={{ backgroundImage: dogsBreedView ?  backgroundImageDog : 'url(' + character.url + ')' }}
                                   className='card'>
                                   <div className='nameContainer'>
                                     <h3 className="name">{dogsBreedView ? breedFound.name : character.name}</h3>
