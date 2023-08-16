@@ -45,10 +45,8 @@ export const Dashboard = () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/users`, { params: { user_id } });
 
-      // Create an object to track the count of each race
       const raceCount = {};
 
-      // Iterate through the response data and update the race count object
       response.data.forEach(dog => {
         const race = dog.race;
         if (race in raceCount) {
@@ -58,10 +56,9 @@ export const Dashboard = () => {
         }
       });
 
-      // Update the dogsList with count property
       const updatedDogsList = response.data.map(dog => ({
         ...dog,
-        count: raceCount[dog.race] // Replace 'race' with the actual property name
+        count: raceCount[dog.race]
       }));
 
       setDogsList(updatedDogsList);
@@ -208,7 +205,7 @@ export const Dashboard = () => {
                           className='card'>
                           <div className='nameContainer'>
                             <div className='iconDescCloseContainer'>
-                              <svg onClick={() => { setMatchClickedChat(false); setCloseChat(true) }} className="iconDesc iconDescCloseProfil" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" /></svg>
+                              <svg onClick={() => { setMatchClickedChat(false); setCloseChat(true); setDogsBreedView(false) }} className="iconDesc iconDescCloseProfil" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c-9.4 9.4-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0z" /></svg>
                             </div>
                             <h3 className="name">{matchClickedChat.name}</h3>
                           </div>

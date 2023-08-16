@@ -8,7 +8,6 @@ require('dotenv').config()
 const uri = process.env.URI
 const PORT = process.env.API_PORT
 
-
 const app = express()
 
 if (PORT) {
@@ -278,7 +277,7 @@ app.get("/messages", async (req, res) => {
     const { fromUserId, toUserId } = req.query
     const query = {
         from: fromUserId,
-        to: toUserId
+        to: toUserId,
     }
 
     try {
