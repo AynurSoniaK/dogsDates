@@ -3,13 +3,12 @@ import axios from 'axios'
 import { useCookies } from "react-cookie"
 import { useNavigate } from 'react-router-dom'
 
-const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeChat, setCloseChat }) => {
+const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeChat }) => {
 
   const [dogMatched, setDogMatched] = useState([])
-  const [cookies, setCookie, removeCookie] = useCookies(['cookie-user'])
+  const [cookies] = useCookies(['cookie-user'])
   const matchedUserIds = matches.length > 0 ? matches.map(({ user_id }) => user_id) : [];
   const [matchListReady, setMatchListReady] = useState(false)
-  const [bothMatchedReady, setBothMatchedReady] = useState(false)
 
   const userId = cookies.UserId
   let navigate = useNavigate()
@@ -31,35 +30,31 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeCh
 
   const sendDataToParent = () => {
     onChildMatchListChange(bothMatched);
-    setBothMatchedReady(true)
   };
 
   const bothMatched = dogMatched.length > 0 ? dogMatched.filter(
     (dog) => dog.matches.filter((profile) => profile.user_id == userId).length > 0) : []
 
   useEffect(() => {
+    if (bothMatched) {
+      sendDataToParent();
+    }
+  }, [bothMatched.length, matchListReady]);
+
+  useEffect(() => {
     if (!closeChat) {
       getMatches();
     }
     if (closeChat) {
-      setMatchListReady(true)
+      setMatchListReady(false)
     }
   }, [matches, closeChat]);
-
-  useEffect(() => {
-  }, [matchListReady]);
-
-  useEffect(() => {
-    if (matchListReady) {
-      sendDataToParent();
-    }
-  }, [bothMatched.length, matchListReady]);
 
 
   return (
     <>{matchListReady &&
       <div className='matchesList'>
-        {bothMatched.length > 0 && bothMatchedReady ? bothMatched.map((el, index) => (
+        {bothMatched.length > 0 ? bothMatched.map((el, index) => (
           <div key={index} style={{ marginLeft: "10px" }} onClick={() => setMatchClicked(el)}>
             <div className="imgContainer">
               <img src={el.url} alt="profile-pics" />

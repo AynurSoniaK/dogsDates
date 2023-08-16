@@ -792,7 +792,11 @@ select {
 }
 
 .inputChat textarea {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    border:none;
+    resize: none;
+    outline: none;
+    border-bottom: 1px solid  #FF5733;
 }
 
 .inputChat button {
