@@ -92,7 +92,7 @@ button {
     background-color: #fd267a;
     border-color: #fd267a;
     color: white;
-    cursor:pointer
+    cursor: pointer
 }
 
 .logo {
@@ -225,7 +225,7 @@ nav .navButton:disabled {
 .countRace {
     position: relative;
     bottom: -88px;
-    font-size:13px
+    font-size: 13px
 }
 
 .profileBack:hover {
@@ -466,7 +466,7 @@ select {
     background-color: #d32f2f;
     opacity: 0.7;
     color: #ffffff;
-    border:none
+    border: none
 }
 
 .iconDescCloseProfil {
@@ -503,7 +503,7 @@ select {
 }
 
 .buttonModal {
-    border: 1px solid  pink;
+    border: 1px solid pink;
     position: absolute;
     top: 5%;
     background-color: white;
@@ -649,13 +649,16 @@ select {
 }
 
 @keyframes blink {
-    0%, 100% {
-      background-color: pink;
+
+    0%,
+    100% {
+        background-color: pink;
     }
+
     50% {
-      background-color: white;
+        background-color: white;
     }
-  }
+}
 
 @-webkit-keyframes slideIn {
     0% {
@@ -772,6 +775,19 @@ select {
     width: 55px;
     height: 55px;
     overflow: hidden;
+    position: relative;
+}
+
+.imgContainer .bubble {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px 11px;
+    top: -8px;
+    right: 12px;
+    width: fit-content;
+    word-wrap: break-word;
+    border: 1px solid pink;
 }
 
 .imgContainer img {
@@ -793,10 +809,10 @@ select {
 
 .inputChat textarea {
     margin-bottom: 40px;
-    border:none;
+    border: none;
     resize: none;
     outline: none;
-    border-bottom: 1px solid  #FF5733;
+    border-bottom: 1px solid #FF5733;
 }
 
 .inputChat button {

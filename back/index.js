@@ -274,22 +274,25 @@ app.put("/deleteMatch", async (req, res) => {
 
 app.get("/messages", async (req, res) => {
     const client = new MongoClient(uri);
-    const { fromUserId, toUserId } = req.query
+    const { fromUserId, toUserId } = req.query;
     const query = {
         from: fromUserId,
         to: toUserId,
-    }
-
+    };
+    
     try {
-        await client.connect()
-        const bdd = client.db('Dogs')
-        const messages = bdd.collection('messages')
-        const data = await messages.find(query).toArray()
-        res.send(data)
+        await client.connect();
+        const bdd = client.db('Dogs');
+        const messages = bdd.collection('messages');
+        
+        const data = await messages.find(query).toArray();
+                
+        res.send(data);
     } finally {
-        await client.close()
+        await client.close();
     }
-})
+});
+
 
 app.post("/addMessage", async (req, res) => {
     const client = new MongoClient(uri);

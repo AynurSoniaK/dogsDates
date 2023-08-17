@@ -155,8 +155,6 @@ export const Dashboard = () => {
     const count = dogsList.filter(dog => dog.race === specificRace).length;
   }
 
-  console.log(dogsList)
-
   useEffect(() => {
     getUser().then(() => getDogs()).then(() => getDogsApiInfo()).then(() => setFetchReady(true))
   }, [])
