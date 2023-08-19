@@ -21,7 +21,6 @@ const ChatBox = ({ user, matchClicked }) => {
           }
         }
       )
-      console.log(response,"res")
       setUserMessages(response.data)
     }
     catch (err) {
