@@ -40,7 +40,16 @@ const Chat = ({ user, setMatchClickedChat, closeChat, setCloseChat }) => {
     return (
         <div className="chatContainer">
             <div>
-                <button className={animNewMatch ? 'choice highlight' : 'choice'} onClick={() => setMatchClicked("")}>Matches ({childMatchList.length})</button>
+                <button
+                    className={animNewMatch ? 'choice highlight' : 'choice'}
+                    disabled={childMatchList.length === 0}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setMatchClicked("");
+                    }}
+                >
+                    {childMatchList.length > 0 ? childMatchList.length : ""} Matches 
+                </button>                
                 <button className='choice' disabled={!matchClicked}>  {matchClicked ? `Chat with ${matchClicked.name}` : 'Chat'}
                 </button>
             </div>

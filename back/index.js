@@ -265,6 +265,7 @@ app.put("/deleteMatch", async (req, res) => {
         const updateUser = await users.updateOne(query, data);
         res.send(updateUser);
     } catch (error) {
+        console.log(error)
         res.status(500).send("An error occurred");
     } finally {
         await client.close();
@@ -286,7 +287,7 @@ app.get("/messages", async (req, res) => {
         const messages = bdd.collection('messages');
         
         const data = await messages.find(query).toArray();
-                
+
         res.send(data);
     } finally {
         await client.close();

@@ -776,6 +776,7 @@ select {
     height: 55px;
     overflow: hidden;
     position: relative;
+    cursor: pointer;
 }
 
 .imgContainer .bubble {
@@ -788,6 +789,26 @@ select {
     width: fit-content;
     word-wrap: break-word;
     border: 1px solid pink;
+}
+
+.trash {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    margin-left: 5px;
+    opacity: 0.4;
+    top:-7px;
+    z-index:100;
+    cursor:pointer;
+}
+
+.trash svg {
+    
+}
+
+.trash:hover {
+    opacity: 1;
+    fill:red
 }
 
 .imgContainer img {
