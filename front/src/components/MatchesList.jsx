@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useCookies } from "react-cookie"
 import { useNavigate } from 'react-router-dom'
 
-const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeChat }) => {
+const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
 
   const [dogMatched, setDogMatched] = useState([])
   const [cookies] = useCookies(['cookie-user'])
@@ -66,16 +66,16 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeCh
 
   const deleteUserMatch = async (matchUserId) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/deleteMatch`, {
-        user_id: userId,
-        matchUserId,
-      });
+        await axios.put(`${process.env.REACT_APP_API_URL}/deleteMatch`, {
+            user_id: userId,
+            matchUserId,
+        });
+        const newBothMatched = bothLiked.filter((dog) => dog.user_id !== matchUserId);
+        setBothLiked(newBothMatched);
     } catch (error) {
-      console.error("Error while deleting match", error);
+        console.error("Error while deleting match", error);
     }
-    const newBothMatched = bothLiked.filter((dog) => dog.user_id !== matchUserId);
-    setBothLiked(newBothMatched)
-  };
+};
 
   useEffect(() => {
     if (bothLiked) {
@@ -89,12 +89,13 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeCh
   }, [matches]);
 
   useEffect(() => {
-    if (dogMatched) {
-      const bothMatched = dogMatched.length > 0 ? dogMatched.filter(
-        (dog) => dog.matches.filter((profile) => profile.user_id === userId).length > 0) : []
-      setBothLiked(bothMatched)
+    if (dogMatched && dogMatched.length > 0) {
+        const matchedDogs = dogMatched.filter(dog => 
+            dog.matches.some(profile => profile.user_id === userId)
+        );
+        setBothLiked(matchedDogs);
     }
-  }, [dogMatched]);
+}, [dogMatched, userId]);
 
   //   useEffect(() => {
   //   if (!closeChat) {
@@ -108,7 +109,7 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange, closeCh
   return (
     <>{matchListReady &&
       <div className='matchesList'>
-        {bothLiked.length > 0 ? bothLiked?.map((el, index) => (
+        {bothLiked.length > 0 ? bothLiked.map((el, index) => (
           <div key={index} style={{ marginLeft: "10px" }}>
             <div className="imgContainer" onClick={() => setMatchClicked(el)}>
               {el.messages && !el.messages.every(message => message.read) && (

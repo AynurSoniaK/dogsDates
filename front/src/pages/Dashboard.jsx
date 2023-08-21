@@ -184,7 +184,7 @@ export const Dashboard = () => {
             </div>}
           {fetchReady &&
             <>
-              <Chat user={user} setMatchClickedChat={setMatchClickedChat} closeChat={closeChat} setCloseChat={setCloseChat} />
+              <Chat user={user} setUser={setUser} setMatchClickedChat={setMatchClickedChat} closeChat={closeChat} setCloseChat={setCloseChat} />
               {matchClickedChat ?
                 <>
                   <div className="swipeContainer">

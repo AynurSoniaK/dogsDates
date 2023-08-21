@@ -1,21 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import ChatBox from './ChatBox'
 import MatchesList from './MatchesList'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
-const Chat = ({ user, setMatchClickedChat, closeChat, setCloseChat }) => {
+const Chat = ({ user, setUser, setMatchClickedChat, closeChat, setCloseChat }) => {
     const [matchClicked, setMatchClicked] = useState("")
     const [childMatchList, setChildMatchList] = useState([]);
     const [animNewMatch, setAnimNewMatch] = useState(false);
+    const navigate = useNavigate();
 
     const handleChildMatchList = (matchList) => {
         setChildMatchList(matchList);
         setCloseChat(false)
     };
 
+    const updateUser = async () => {
+        const user_id = user.user_id
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/user`, { params: { user_id } })
+            setUser(response.data)
+            setMatchClicked("")
+        }
+        catch (err) {
+            navigate('/error');
+        }
+    }
+
+    const CHAT_ANIMATION_DURATION = 2000;
+
     //close the chat to see the list of matches
     useEffect(() => {
         if (closeChat) {
-            setMatchClicked("")
+            console.log('update')
+            updateUser()
         }
     }, [closeChat]);
 
@@ -32,7 +50,7 @@ const Chat = ({ user, setMatchClickedChat, closeChat, setCloseChat }) => {
             setAnimNewMatch(true)
             const timer = setTimeout(() => {
                 setAnimNewMatch(false);
-            }, 2000);
+            }, CHAT_ANIMATION_DURATION);
             return () => clearTimeout(timer);
         }
     }, [childMatchList.length]);
@@ -42,14 +60,14 @@ const Chat = ({ user, setMatchClickedChat, closeChat, setCloseChat }) => {
             <div>
                 <button
                     className={animNewMatch ? 'choice highlight' : 'choice'}
-                    disabled={childMatchList.length === 0}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        setMatchClicked("");
-                    }}
+                    disabled={childMatchList.length === 0 || matchClicked}
+                    // onClick={() => {
+                    //     setCloseChat(true);
+                    //     setMatchClicked("");
+                    // }}
                 >
-                    {childMatchList.length > 0 ? childMatchList.length : ""} Matches 
-                </button>                
+                    {childMatchList.length > 0 ? childMatchList.length : ""} Matches
+                </button>
                 <button className='choice' disabled={!matchClicked}>  {matchClicked ? `Chat with ${matchClicked.name}` : 'Chat'}
                 </button>
             </div>
