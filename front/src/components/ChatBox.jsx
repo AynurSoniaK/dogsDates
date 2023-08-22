@@ -4,11 +4,14 @@ import InputChat from './InputChat'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ClipLoader from "react-spinners/ClipLoader"
 
 const ChatBox = ({ user, matchClicked }) => {
 
   const [userMessages, setUserMessages] = useState([])
   const [responseMessages, setResponseMessages] = useState([])
+  const [loadingUserMessages, setLoadingUserMessages] = useState(true)
+  const [loadingResponseMessages, setLoadingResponseMessages] = useState(true)
 
   let navigate = useNavigate()
 
@@ -22,6 +25,7 @@ const ChatBox = ({ user, matchClicked }) => {
         }
       )
       setUserMessages(response.data)
+      setLoadingUserMessages(false)
     }
     catch (err) {
       navigate('/error');
@@ -38,6 +42,7 @@ const ChatBox = ({ user, matchClicked }) => {
         }
       )
       setResponseMessages(response.data)
+      setLoadingResponseMessages(false)
     }
     catch (err) {
       navigate('/error');
@@ -72,10 +77,25 @@ const ChatBox = ({ user, matchClicked }) => {
 
   return (
     <>
-      <ChatSpace user={user} orderedMessages={orderedMessages} />
-      <InputChat user={user} matchClicked={matchClicked} getMyMessages={getMyMessages} getResponseMessages={getResponseMessages} />
+      {loadingResponseMessages && loadingUserMessages ? (
+        <div className='loadingMsg'>
+          <span>Loading messages</span>
+          <ClipLoader
+            color="grey"
+            loading={user}
+            size={10}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
+      ) : (
+        <>
+          <ChatSpace user={user} orderedMessages={orderedMessages} />
+          <InputChat user={user} matchClicked={matchClicked} getMyMessages={getMyMessages} getResponseMessages={getResponseMessages} />
+        </>
+      )}
     </>
-  )
+  );
 }
 
 export default ChatBox
