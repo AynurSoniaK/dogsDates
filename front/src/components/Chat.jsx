@@ -8,6 +8,8 @@ const Chat = ({ user, setUser, setMatchClickedChat, closeChat, setCloseChat }) =
     const [matchClicked, setMatchClicked] = useState("")
     const [childMatchList, setChildMatchList] = useState([]);
     const [animNewMatch, setAnimNewMatch] = useState(false);
+    const [loading, setLoading] = useState(true);
+
     const navigate = useNavigate();
 
     const handleChildMatchList = (matchList) => {
@@ -32,7 +34,6 @@ const Chat = ({ user, setUser, setMatchClickedChat, closeChat, setCloseChat }) =
     //close the chat to see the list of matches
     useEffect(() => {
         if (closeChat) {
-            console.log('update')
             updateUser()
         }
     }, [closeChat]);
@@ -71,7 +72,7 @@ const Chat = ({ user, setUser, setMatchClickedChat, closeChat, setCloseChat }) =
                 <button className='choice' disabled={!matchClicked}>  {matchClicked ? `Chat with ${matchClicked.name}` : 'Chat'}
                 </button>
             </div>
-            {!matchClicked && <MatchesList setCloseChat={setCloseChat} closeChat={closeChat} matches={user.matches} setMatchClicked={setMatchClicked} onChildMatchListChange={handleChildMatchList} />}
+            {!matchClicked && loading && <MatchesList setCloseChat={setCloseChat} closeChat={closeChat} matches={user.matches} setMatchClicked={setMatchClicked} onChildMatchListChange={handleChildMatchList} />}
             {matchClicked && <ChatBox user={user} matchClicked={matchClicked} />}
         </div>
     )
