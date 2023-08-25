@@ -10,12 +10,27 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
   const matchedUserIds = matches.length > 0 ? matches.map(({ user_id }) => user_id) : [];
   const [matchListReady, setMatchListReady] = useState(false)
   const [bothLiked, setBothLiked] = useState([])
-  const [responseMessages, setResponseMessages] = useState([])
+  const [messagesSeen, setMessagesSeen] = useState([])
 
   const userId = cookies.UserId
   let navigate = useNavigate()
 
   const getMatches = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dogsMatches`, {
+        params: { dogsIds: JSON.stringify(matchedUserIds) }
+      })
+      if (response.status === 200) {
+        setDogMatched(response.data)
+        setMatchListReady(true)
+      }
+    }
+    catch (error) {
+      navigate('/error');
+    }
+  }
+
+  const updateMsgSeen = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/dogsMatches`, {
         params: { dogsIds: JSON.stringify(matchedUserIds) }
@@ -63,24 +78,28 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
     }
   };
 
-
   const deleteUserMatch = async (matchUserId) => {
     try {
-        await axios.put(`${process.env.REACT_APP_API_URL}/deleteMatch`, {
-            user_id: userId,
-            matchUserId,
-        });
-        const newBothMatched = bothLiked.filter((dog) => dog.user_id !== matchUserId);
-        setBothLiked(newBothMatched);
+      await axios.put(`${process.env.REACT_APP_API_URL}/deleteMatch`, {
+        user_id: userId,
+        matchUserId,
+      });
+      const newBothMatched = bothLiked.filter((dog) => dog.user_id !== matchUserId);
+      setBothLiked(newBothMatched);
     } catch (error) {
-        console.error("Error while deleting match", error);
+      console.error("Error while deleting match", error);
     }
-};
+  };
+
+  useEffect(() => {
+    if (matchListReady) {
+      getResponseMessages()
+    }
+  }, [matchListReady]);
 
   useEffect(() => {
     if (bothLiked) {
       sendDataToParent();
-      //getResponseMessages()
     }
   }, [bothLiked]);
 
@@ -89,34 +108,25 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
   }, [matches]);
 
   useEffect(() => {
-    if (dogMatched && dogMatched.length > 0) {
-        const matchedDogs = dogMatched.filter(dog => 
-            dog.matches.some(profile => profile.user_id === userId)
-        );
-        setBothLiked(matchedDogs);
+    if (dogMatched.length > 0) {
+      const matchedDogs = dogMatched.filter(dog =>
+        dog.matches.some(profile => profile.user_id === userId)
+      );
+      setBothLiked(matchedDogs);
     }
-}, [dogMatched, userId]);
-
-  //   useEffect(() => {
-  //   if (!closeChat) {
-  //     getMatches();
-  //   }
-  //   if (closeChat) {
-  //     setMatchListReady(false)
-  //   }
-  // }, [matches, closeChat]);
+  }, [dogMatched, userId]);
 
   return (
     <>{matchListReady &&
       <div className='matchesList'>
         {bothLiked.length > 0 ? bothLiked.map((el, index) => (
-          <div key={index} style={{ marginLeft: "10px" }}>
+          <div className="dogProfilContainer" key={index} style={{ marginLeft: "10px" }}>
+            {el.messages && !el.messages.every(message => message.read) && (
+              <span className='bubble'>
+                {el.messages.filter(message => !message.read).length}
+              </span>
+            )}
             <div className="imgContainer" onClick={() => setMatchClicked(el)}>
-              {el.messages && !el.messages.every(message => message.read) && (
-                <span className='bubble'>
-                  {el.messages.filter(message => !message.read).length}
-                </span>
-              )}
               <img src={el.url} alt="profile-pics" />
             </div>
             <h3>{el.name}
