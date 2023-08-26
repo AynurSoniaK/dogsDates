@@ -807,6 +807,10 @@ select {
     cursor:pointer;
 }
 
+.opacityImg {
+    opacity: 0.5;
+}
+
 .trash svg {
     
 }
