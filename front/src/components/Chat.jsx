@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ChatBox from './ChatBox'
 import MatchesList from './MatchesList'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Chat = ({ user, setUser, setMatchClickedChat, closeChat, setCloseChat }) => {
     const [matchClicked, setMatchClicked] = useState("")
