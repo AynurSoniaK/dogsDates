@@ -11,6 +11,7 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
   const [matchListReady, setMatchListReady] = useState(false)
   const [bothLiked, setBothLiked] = useState([])
   const [messagesSeen, setMessagesSeen] = useState([])
+  const [loading, setLoading] = useState(true);
 
   const userId = cookies.UserId
   let navigate = useNavigate()
@@ -26,24 +27,25 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
       }
     }
     catch (error) {
+      console.log(error)
       navigate('/error');
     }
   }
 
-  const updateMsgSeen = async () => {
+  const updateMsgSeen = async (el) => {
+    setMatchClicked(el)
+    const messageIds = el.messages.map(message => message._id);
+
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/dogsMatches`, {
-        params: { dogsIds: JSON.stringify(matchedUserIds) }
-      })
-      if (response.status === 200) {
-        setDogMatched(response.data)
-        setMatchListReady(true)
-      }
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/updateMessages`,
+        { messageIds }
+      );
+      console.log('Messages marked as read:', response.data);
+    } catch (error) {
+      console.error('Error marking messages as read:', error);
     }
-    catch (error) {
-      navigate('/error');
-    }
-  }
+  };
 
   const sendDataToParent = () => {
     onChildMatchListChange(bothLiked);
@@ -73,6 +75,7 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
       }));
 
       setDogMatched(updatedDogProfiles);
+      setLoading(false)
     } catch (err) {
       navigate('/error');
     }
@@ -126,7 +129,7 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
                 {el.messages.filter(message => !message.read).length}
               </span>
             )}
-            <div className="imgContainer" onClick={() => setMatchClicked(el)}>
+            <div className="imgContainer" onClick={() => updateMsgSeen(el)}>
               <img src={el.url} alt="profile-pics" />
             </div>
             <h3>{el.name}

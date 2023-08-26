@@ -1,5 +1,5 @@
 const express = require('express')
-const { MongoClient } = require("mongodb")
+const { MongoClient, ObjectId } = require("mongodb")
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -250,7 +250,7 @@ app.put("/deleteMatch", async (req, res) => {
     });
 
     const { user_id, matchUserId } = req.body;
-    
+
     try {
         await client.connect();
         const bdd = client.db("Dogs");
@@ -280,12 +280,12 @@ app.get("/messages", async (req, res) => {
         from: fromUserId,
         to: toUserId,
     };
-    
+
     try {
         await client.connect();
         const bdd = client.db('Dogs');
         const messages = bdd.collection('messages');
-        
+
         const data = await messages.find(query).toArray();
 
         res.send(data);
@@ -309,5 +309,33 @@ app.post("/addMessage", async (req, res) => {
         await client.close()
     }
 })
+
+app.put("/updateMessages", async (req, res) => {
+    const client = new MongoClient(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
+
+    const messageIds = req.body.messageIds;
+
+    try {
+        await client.connect()
+        const db = client.db('Dogs');
+        const messagesCollection = db.collection('messages');
+
+        const query = { _id: { $in: messageIds.map(id => ObjectId(id)) } }
+        const updateData = {
+            $set: {
+                read: true,
+            },
+        }
+        const updateMessages = await messagesCollection.updateMany(query, updateData)
+    } catch (error) {
+        console.error('Error updating messages')
+    } finally {
+        await client.close()
+    }
+});
+
 
 module.exports = app;

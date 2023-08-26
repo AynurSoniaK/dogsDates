@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react'
 import ChatBox from './ChatBox'
 import MatchesList from './MatchesList'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
 
 const Chat = ({ user, setUser, setMatchClickedChat, closeChat, setCloseChat }) => {
     const [matchClicked, setMatchClicked] = useState("")
     const [childMatchList, setChildMatchList] = useState([]);
     const [animNewMatch, setAnimNewMatch] = useState(false);
-    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -62,17 +60,13 @@ const Chat = ({ user, setUser, setMatchClickedChat, closeChat, setCloseChat }) =
                 <button
                     className={animNewMatch ? 'choice highlight' : 'choice'}
                     disabled={childMatchList.length === 0 || matchClicked}
-                    // onClick={() => {
-                    //     setCloseChat(true);
-                    //     setMatchClicked("");
-                    // }}
                 >
                     {childMatchList.length > 0 ? childMatchList.length : ""} Matches
                 </button>
                 <button className='choice' disabled={!matchClicked}>  {matchClicked ? `Chat with ${matchClicked.name}` : 'Chat'}
                 </button>
             </div>
-            {!matchClicked && loading && <MatchesList setCloseChat={setCloseChat} closeChat={closeChat} matches={user.matches} setMatchClicked={setMatchClicked} onChildMatchListChange={handleChildMatchList} />}
+            {!matchClicked && <MatchesList setCloseChat={setCloseChat} closeChat={closeChat} matches={user.matches} setMatchClicked={setMatchClicked} onChildMatchListChange={handleChildMatchList} />}
             {matchClicked && <ChatBox user={user} matchClicked={matchClicked} />}
         </div>
     )
