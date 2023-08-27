@@ -6,6 +6,11 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ClipLoader from "react-spinners/ClipLoader"
 
+const formatDate = (date) => {
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  return new Date(date).toLocaleDateString(undefined, options);
+};
+
 const ChatBox = ({ user, matchClicked }) => {
 
   const [userMessages, setUserMessages] = useState([])
@@ -73,7 +78,16 @@ const ChatBox = ({ user, matchClicked }) => {
     messagesFullData.push(msg)
   })
 
-  const orderedMessages = messagesFullData?.sort((a, b) => a.timestamps - b.timestamps)
+  const orderedMessages = messagesFullData?.sort(function(a,b){
+    return new Date(a.date) - new Date(b.date);
+  });
+
+  const formattedMessages = orderedMessages?.map(message => {
+    return {
+      ...message,
+      date: formatDate(message.date) // Format the date using formatDate function
+    };
+  });
 
   return (
     <>
@@ -90,7 +104,7 @@ const ChatBox = ({ user, matchClicked }) => {
         </div>
       ) : (
         <>
-          <ChatSpace user={user} orderedMessages={orderedMessages} />
+          <ChatSpace user={user} orderedMessages={formattedMessages} />
           <InputChat user={user} matchClicked={matchClicked} getMyMessages={getMyMessages} getResponseMessages={getResponseMessages} />
         </>
       )}

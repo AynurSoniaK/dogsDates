@@ -8,11 +8,18 @@ const ChatSpace = ({ orderedMessages, user }) => {
         return (
           <div className={user.name !== msg.name ? 'chatItemPositionReverse' : 'chatItemPosition'} key={index}>
             <div className='chatHeader'>
-              <div className='imgContainer'>
-                <img src={msg.url} alt={`${msg.name} profile`} />
+              <div className="date">
+                <p>{msg.date}</p>
+              </div>
+              <div className={user.name !== msg.name ? 'rowReverse' : 'row'}>
+                <div className='imgContainer'>
+                  <img src={msg.url} alt={`${msg.name} profile`} />
+                </div>
+                <div className="messageContainer">
+                  <p className="messageText">{msg.message}</p>
+                </div>
               </div>
             </div>
-            <p>{msg.message}</p>
           </div>
         )
       }) :
