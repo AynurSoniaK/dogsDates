@@ -2,6 +2,8 @@ import React from 'react'
 
 const ChatSpace = ({ orderedMessages, user }) => {
 
+  console.log(orderedMessages,"orderedMessages")
+
   return (
     <div className='chatSpace'>
       {orderedMessages.length > 0 ? orderedMessages.map((msg, index) => {
@@ -15,7 +17,7 @@ const ChatSpace = ({ orderedMessages, user }) => {
                 <div className='imgContainer'>
                   <img src={msg.url} alt={`${msg.name} profile`} />
                 </div>
-                <div className="messageContainer">
+                <div className={msg.read === false ? "messageContainer bold " : "messageContainer"}>
                   <p className="messageText">{msg.message}</p>
                 </div>
               </div>

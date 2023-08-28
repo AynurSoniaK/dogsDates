@@ -255,8 +255,8 @@ export const Dashboard = () => {
                       dogsBreedList.length > 0 && dogsList.length > 0 &&
                       dogsList.map((character, index) =>
                         <div>
-                          {userMatchesArray.length === dogsList.length &&
-                            <h2 className='endList'>No dogs for now</h2>}
+                          {/* {userMatchesArray.length === dogsList.length &&
+                            <h2 className='endList'>No dogs for now</h2>} */}
                           <div className="zIndex2" key={character.name}>
                             {
                               userMatchesArray && !userMatchesArray.includes(character.user_id) &&
