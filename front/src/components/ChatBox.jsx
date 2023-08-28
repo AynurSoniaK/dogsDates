@@ -8,7 +8,7 @@ import ClipLoader from "react-spinners/ClipLoader"
 
 const formatDate = (date) => {
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-  return new Date(date).toLocaleDateString(undefined, options);
+  return new Date(date).toLocaleDateString('en-US', options);
 };
 
 const ChatBox = ({ user, matchClicked }) => {
@@ -66,6 +66,7 @@ const ChatBox = ({ user, matchClicked }) => {
     msg['url'] = user?.url
     msg['message'] = message.message
     msg['date'] = message.timestamps
+    msg['read'] = message.read
     messagesFullData.push(msg)
   })
 

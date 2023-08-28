@@ -33,16 +33,15 @@ const MatchesList = ({ matches, setMatchClicked, onChildMatchListChange }) => {
 
   const updateMsgSeen = async (el) => {
     setMatchClicked(el)
-    const messageIds = el.messages.map(message => message._id);
+    const messageIds = el.messages?.map(message => message._id);
 
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_API_URL}/updateMessages`,
         { messageIds }
       );
-      console.log('Messages marked as read:', response.data);
     } catch (error) {
-      console.error('Error marking messages as read:', error);
+      console.error('Error marking messages as read');
     }
   };
 

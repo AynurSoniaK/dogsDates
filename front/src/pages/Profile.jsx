@@ -1,12 +1,10 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 import { useCookies } from 'react-cookie'
 import ClipLoader from "react-spinners/ClipLoader"
 
 const dogApiKey = process.env.DOGAPI
-
 
 const Profile = () => {
 
@@ -15,7 +13,6 @@ const Profile = () => {
     const [breedNameList, setBreedNameList] = useState([])
     const [user, setUser] = useState("")
     const [fetchReady, setFetchReady] = useState(false)
-    const logged = cookies.UserId
     const [inputData, setInputData] = useState({
         user_id: cookies.UserId,
         name: "",
@@ -72,7 +69,7 @@ const Profile = () => {
             weight: user.weight,
             about: user.about,
             city: user.city,
-            matches:  [],
+            matches: user.matches ?? [],
             noMatches: user.noMatches ?? []
         }))
     }, [user])
@@ -108,13 +105,13 @@ const Profile = () => {
     return (
         <div className='profilePage'>
             {!fetchReady &&
-            <ClipLoader
-                color="black"
-                loading={user}
-                size={100}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-            />}
+                <ClipLoader
+                    color="black"
+                    loading={user}
+                    size={100}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                />}
             {fetchReady &&
                 <div className='profileContainer'>
                     {user.name ?
@@ -153,7 +150,7 @@ const Profile = () => {
                                 onChange={handleChange}
                             />
                             <label htmlFor="race-select">Race </label>
-                            <select name="race" id="race-select" onChange={handleChange}>
+                            <select name="race" id="race-select" onChange={handleChange} value={inputData.race}>
                                 <option value="">--Please choose a race</option>
                                 {breedNameList.map((option, index) => {
                                     return <option key={index} >

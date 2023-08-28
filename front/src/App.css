@@ -586,12 +586,16 @@ select {
 
 .endList {
     position: absolute;
-    top: 120px;
-    left: 500px;
+    top: 68px;
+    left: 532px;
     font-size: 80px;
     color: var(--grey-color);
     background-color: white;
     padding: 0 20px;
+}
+
+.bold {
+    font-weight: 900;
 }
 
 @keyframes fadeInOpacity {
@@ -863,6 +867,7 @@ select {
 
 .date p {
     margin: 5px;
+    font-size: 10px;
 }
 
 .inputChat {
