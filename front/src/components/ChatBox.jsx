@@ -86,7 +86,8 @@ const ChatBox = ({ user, matchClicked }) => {
   const formattedMessages = orderedMessages?.map(message => {
     return {
       ...message,
-      date: formatDate(message.date) // Format the date using formatDate function
+      date: formatDate(message.date),
+      time: formatDate(message.date).slice(-8)// Format the date using formatDate function
     };
   });
 
