@@ -12,7 +12,7 @@ const ChatSpace = ({ orderedMessages, user }) => {
             <div className='chatHeader'>
               {msg.date !== prevMsg?.date &&
                 <div className="date">
-                  <p>{msg.date}</p>
+                  <p>{msg.date.slice(0, -11)}</p>
                 </div>
               }
               <div className={user.name !== msg.name ? 'rowReverse' : 'row'}>
