@@ -862,12 +862,21 @@ select {
 
 .date {
     background-color: #fff;
-    font-size: 15px;
 }
 
 .date p {
     margin: 5px;
     font-size: 10px;
+}
+
+.chatContainer .time p{
+    font-size: 10px;
+    text-align: left;
+    margin: 0 24px;
+}
+
+.chatContainer .rowReverse .time p{
+    text-align: right;
 }
 
 .inputChat {
@@ -911,19 +920,15 @@ select {
     width: 100px;
 }
 
-.chatItemPositionReverse {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row-reverse;
-    padding: 10px;
-}
-
 .chatItemPosition {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+}
+
+.roweverse {
+    flex-direction: row-reverse;
 }
 
 .dialogChatReverse {
